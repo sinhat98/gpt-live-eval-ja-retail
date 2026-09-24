@@ -191,6 +191,9 @@ def run_voice(mode, tid, output, variant, condition="clean"):
             "--no-judge",
             "--max-duration-seconds",
             str(RUN_MAX_DURATION_SECONDS),
+            # A male caller voice keeps the two GPT-Live speakers distinguishable.
+            "--simulator-voice",
+            os.getenv("OPENAI_CALLER_VOICE", "cedar"),
             "--config",
             str(inputs / "run.toml"),
         ]
