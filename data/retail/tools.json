@@ -1,0 +1,452 @@
+[
+  {
+    "type": "function",
+    "name": "find_user_id_by_name_phone",
+    "description": "氏名（登録表記または登録済みの読みかな）と登録電話番号の両方を照合する。\n\n音声で聞いた氏名は漢字を推測せず、読みかなで指定できる。部分一致では本人確認しない。",
+    "parameters": {
+      "properties": {
+        "first_name": {
+          "description": "顧客の名。登録表記または読みかな（ひらがな・カタカナ）。",
+          "title": "First Name",
+          "type": "string"
+        },
+        "last_name": {
+          "description": "顧客の姓。登録表記または読みかな（ひらがな・カタカナ）。",
+          "title": "Last Name",
+          "type": "string"
+        },
+        "phone_number": {
+          "description": "登録電話番号。数字・ハイフン・空白・括弧で指定。",
+          "title": "Phone Number",
+          "type": "string"
+        }
+      },
+      "required": [
+        "first_name",
+        "last_name",
+        "phone_number"
+      ],
+      "title": "parameters",
+      "type": "object"
+    },
+    "strict": false
+  },
+  {
+    "type": "function",
+    "name": "calculate",
+    "description": "数式の計算結果を算出します。",
+    "parameters": {
+      "properties": {
+        "expression": {
+          "description": "計算する数式（例: '2 + 2'）。数式には、数値、演算子（+, -, *, /）、括弧、スペースを含めることができます。",
+          "title": "Expression",
+          "type": "string"
+        }
+      },
+      "required": [
+        "expression"
+      ],
+      "title": "parameters",
+      "type": "object"
+    },
+    "strict": false
+  },
+  {
+    "type": "function",
+    "name": "cancel_pending_order",
+    "description": "保留中の注文をキャンセルします。注文がすでに処理済み、\n\nまたは配送済みの場合はキャンセルできません。エージェントはキャンセルの詳細を説明し、\n処理を進めるためにユーザーに明示的な確認を求める必要があります。\nユーザーが同意した場合、注文ステータスは「キャンセル済み」に変更され、代金が払い戻されます。\n決済にギフトカードが使用されていた場合、払い戻しは即座にユーザーのギフトカード残高に追加されます。\nそれ以外の場合、払い戻しの処理には5〜7営業日かかります。この関数は、キャンセル後の注文詳細を返します。",
+    "parameters": {
+      "properties": {
+        "order_id": {
+          "description": "注文ID（例: '#W0000000'）。注文IDの先頭に「#」記号があることに注意してください。",
+          "title": "Order Id",
+          "type": "string"
+        },
+        "reason": {
+          "description": "キャンセルの理由。'不要になった'または '間違えて注文した'のいずれかである必要があります。",
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "order_id",
+        "reason"
+      ],
+      "title": "parameters",
+      "type": "object"
+    },
+    "strict": false
+  },
+  {
+    "type": "function",
+    "name": "exchange_delivered_order_items",
+    "description": "配達済みの注文の商品を、同じ製品タイプの新しい商品に交換します。\n\n配達済みの注文に対しては、エージェントによる返品または交換は1回のみ行うことができます。\nエージェントは交換の詳細を説明し、処理を進めるためにユーザーから明示的な同意を得る必要があります。",
+    "parameters": {
+      "properties": {
+        "order_id": {
+          "description": "'#W0000000' のような注文ID。注文IDの先頭に「#」記号があることに注意してください。",
+          "title": "Order Id",
+          "type": "string"
+        },
+        "item_ids": {
+          "description": "交換対象の商品ID。それぞれ '1008292230' のような形式です。リスト内に重複する商品が含まれる可能性があります。",
+          "items": {
+            "type": "string"
+          },
+          "title": "Item Ids",
+          "type": "array"
+        },
+        "new_item_ids": {
+          "description": "交換先となる新しい商品ID。それぞれ '1008292230' のような形式です。\nリスト内に重複する商品が含まれる可能性があります。各新しい商品IDは、\n同じ位置にある商品IDと一致し、かつ同じ製品のものである必要があります。",
+          "items": {
+            "type": "string"
+          },
+          "title": "New Item Ids",
+          "type": "array"
+        },
+        "payment_method_id": {
+          "description": "商品の価格差額を支払う、または返金を受け取るための決済手段ID。\n'gift_card_0000000' や 'credit_card_0000000' など。これらはユーザーまたは\n注文の詳細から確認できます。",
+          "title": "Payment Method Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "order_id",
+        "item_ids",
+        "new_item_ids",
+        "payment_method_id"
+      ],
+      "title": "parameters",
+      "type": "object"
+    },
+    "strict": false
+  },
+  {
+    "type": "function",
+    "name": "get_order_details",
+    "description": "注文のステータスと詳細を取得します。",
+    "parameters": {
+      "properties": {
+        "order_id": {
+          "description": "'#W0000000' のような注文ID。注文IDの先頭に「#」記号があることに注意してください。",
+          "title": "Order Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "order_id"
+      ],
+      "title": "parameters",
+      "type": "object"
+    },
+    "strict": false
+  },
+  {
+    "type": "function",
+    "name": "get_product_details",
+    "description": "製品の在庫詳細を取得します。",
+    "parameters": {
+      "properties": {
+        "product_id": {
+          "description": "'6086499569' のような製品ID。製品IDは商品ID（item id）とは異なることに注意してください。",
+          "title": "Product Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "product_id"
+      ],
+      "title": "parameters",
+      "type": "object"
+    },
+    "strict": false
+  },
+  {
+    "type": "function",
+    "name": "get_item_details",
+    "description": "商品の在庫詳細を取得します。",
+    "parameters": {
+      "properties": {
+        "item_id": {
+          "description": "'6086499569' のような商品ID。商品IDは製品ID（product id）とは異なることに注意してください。",
+          "title": "Item Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "item_id"
+      ],
+      "title": "parameters",
+      "type": "object"
+    },
+    "strict": false
+  },
+  {
+    "type": "function",
+    "name": "get_user_details",
+    "description": "ユーザーの詳細（注文履歴を含む）を取得します。",
+    "parameters": {
+      "properties": {
+        "user_id": {
+          "description": "'sara_doe_496' のようなユーザーID。",
+          "title": "User Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "user_id"
+      ],
+      "title": "parameters",
+      "type": "object"
+    },
+    "strict": false
+  },
+  {
+    "type": "function",
+    "name": "list_all_product_types",
+    "description": "すべての製品タイプの名称と製品IDを一覧表示します。\n\n各製品には、ユニークな商品IDとオプションを持つ、さまざまな異なる商品があります。\nストア内には50種類の製品のみが存在します。",
+    "parameters": {
+      "properties": {},
+      "title": "parameters",
+      "type": "object"
+    },
+    "strict": false
+  },
+  {
+    "type": "function",
+    "name": "modify_pending_order_address",
+    "description": "保留中（未発送）の注文の配送先住所を変更します。\n\nエージェントは変更の詳細を説明し、処理を進めるためにユーザーから明示的な同意を得る必要があります。",
+    "parameters": {
+      "properties": {
+        "order_id": {
+          "description": "'#W0000000' のような注文ID。注文IDの先頭に「#」記号があることに注意してください。",
+          "title": "Order Id",
+          "type": "string"
+        },
+        "address1": {
+          "description": "住所の1行目。'1-2-3' など。",
+          "title": "Address1",
+          "type": "string"
+        },
+        "address2": {
+          "description": "住所の2行目。'丸の内マンション 100' や空文字 '' など。",
+          "title": "Address2",
+          "type": "string"
+        },
+        "city": {
+          "description": "市区町村。'千代田区丸の内' など。",
+          "title": "City",
+          "type": "string"
+        },
+        "state": {
+          "description": "州・都道府県。'東京都' など。",
+          "title": "State",
+          "type": "string"
+        },
+        "country": {
+          "description": "国。'日本' など。",
+          "title": "Country",
+          "type": "string"
+        },
+        "zip": {
+          "description": "郵便番号。'123-4567' など。",
+          "title": "Zip",
+          "type": "string"
+        }
+      },
+      "required": [
+        "order_id",
+        "address1",
+        "address2",
+        "city",
+        "state",
+        "country",
+        "zip"
+      ],
+      "title": "parameters",
+      "type": "object"
+    },
+    "strict": false
+  },
+  {
+    "type": "function",
+    "name": "modify_pending_order_items",
+    "description": "保留中（未発送）の注文の商品を、同じ製品でオプションが異なる新しい商品に変更します。\n\n保留中の注文に対して、この関数は1回のみ呼び出すことができます。\nエージェントは変更の詳細を説明し、処理を進めるためにユーザーから明示的な同意を得る必要があります。",
+    "parameters": {
+      "properties": {
+        "order_id": {
+          "description": "'#W0000000' のような注文ID。注文IDの先頭に「#」記号があることに注意してください。",
+          "title": "Order Id",
+          "type": "string"
+        },
+        "item_ids": {
+          "description": "変更対象の商品ID。それぞれ '1008292230' のような形式です。リスト内に重複する商品が含まれる可能性があります。",
+          "items": {
+            "type": "string"
+          },
+          "title": "Item Ids",
+          "type": "array"
+        },
+        "new_item_ids": {
+          "description": "変更先となる新しい商品ID。それぞれ '1008292230' のような形式です。\nリスト内に重複する商品が含まれる可能性があります。各新しい商品IDは、\n同じ位置にある商品IDと一致し、かつ同じ製品のものである必要があります。",
+          "items": {
+            "type": "string"
+          },
+          "title": "New Item Ids",
+          "type": "array"
+        },
+        "payment_method_id": {
+          "description": "商品の価格差額を支払う、または返金を受け取るための決済手段ID。\n'gift_card_0000000' や 'credit_card_0000000' など。これらはユーザーまたは\n注文の詳細から確認できます。",
+          "title": "Payment Method Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "order_id",
+        "item_ids",
+        "new_item_ids",
+        "payment_method_id"
+      ],
+      "title": "parameters",
+      "type": "object"
+    },
+    "strict": false
+  },
+  {
+    "type": "function",
+    "name": "modify_pending_order_payment",
+    "description": "保留中（未発送）の注文の決済手段を変更します。\n\nエージェントは変更の詳細を説明し、処理を進めるためにユーザーから明示的な同意を得る必要があります。",
+    "parameters": {
+      "properties": {
+        "order_id": {
+          "description": "'#W0000000' のような注文ID。注文IDの先頭に「#」記号があることに注意してください。",
+          "title": "Order Id",
+          "type": "string"
+        },
+        "payment_method_id": {
+          "description": "商品の価格差額を支払う、または返金を受け取るための決済手段ID。\n'gift_card_0000000' や 'credit_card_0000000' など。これらはユーザーまたは\n注文の詳細から確認できます。",
+          "title": "Payment Method Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "order_id",
+        "payment_method_id"
+      ],
+      "title": "parameters",
+      "type": "object"
+    },
+    "strict": false
+  },
+  {
+    "type": "function",
+    "name": "modify_user_address",
+    "description": "ユーザーのデフォルトの配送先住所を変更します。\n\nエージェントは変更の詳細を説明し、処理を進めるためにユーザーから明示的な同意を得る必要があります。",
+    "parameters": {
+      "properties": {
+        "user_id": {
+          "description": "'sara_doe_496' のようなユーザーID。。",
+          "title": "User Id",
+          "type": "string"
+        },
+        "address1": {
+          "description": "住所の1行目。'1-2-3' など。",
+          "title": "Address1",
+          "type": "string"
+        },
+        "address2": {
+          "description": "住所の2行目。'丸の内マンション 100' や空文字 '' など。",
+          "title": "Address2",
+          "type": "string"
+        },
+        "city": {
+          "description": "市区町村。'千代田区丸の内' など。",
+          "title": "City",
+          "type": "string"
+        },
+        "state": {
+          "description": "州・都道府県。'東京都' など。",
+          "title": "State",
+          "type": "string"
+        },
+        "country": {
+          "description": "国。'日本' など。",
+          "title": "Country",
+          "type": "string"
+        },
+        "zip": {
+          "description": "郵便番号。'123-4567' など。",
+          "title": "Zip",
+          "type": "string"
+        }
+      },
+      "required": [
+        "user_id",
+        "address1",
+        "address2",
+        "city",
+        "state",
+        "country",
+        "zip"
+      ],
+      "title": "parameters",
+      "type": "object"
+    },
+    "strict": false
+  },
+  {
+    "type": "function",
+    "name": "return_delivered_order_items",
+    "description": "配達済みの注文の一部商品を返品します。\n\n注文ステータスは「返品リクエスト済み」に変更されます。\nエージェントは返品の詳細を説明し、処理を進めるためにユーザーから明示的な同意を得る必要があります。\n商品の返品方法および返送先に関するフォローアップメールがユーザーに届きます。",
+    "parameters": {
+      "properties": {
+        "order_id": {
+          "description": "'#W0000000' のような注文ID。注文IDの先頭に「#」記号があることに注意してください。",
+          "title": "Order Id",
+          "type": "string"
+        },
+        "item_ids": {
+          "description": "返品対象の商品ID。それぞれ '1008292230' のような形式です。リスト内に重複する商品が含まれる可能性があります。",
+          "items": {
+            "type": "string"
+          },
+          "title": "Item Ids",
+          "type": "array"
+        },
+        "payment_method_id": {
+          "description": "商品の価格差額を支払う、または返金を受け取るための決済手段ID。\n'gift_card_0000000' や 'credit_card_0000000' など。これらはユーザーまたは\n注文の詳細から確認できます。",
+          "title": "Payment Method Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "order_id",
+        "item_ids",
+        "payment_method_id"
+      ],
+      "title": "parameters",
+      "type": "object"
+    },
+    "strict": false
+  },
+  {
+    "type": "function",
+    "name": "transfer_to_human_agents",
+    "description": "ユーザーの問題の要約を添えて、ユーザーを人間のエージェントに転送します。\n\n以下の場合にのみ転送してください。\n - ユーザーが明示的に人間のエージェントを求めている場合\n - ポリシーおよび利用可能なツールでは、ユーザーの問題を解決できない場合",
+    "parameters": {
+      "properties": {
+        "summary": {
+          "description": "ユーザーの問題の要約。",
+          "title": "Summary",
+          "type": "string"
+        }
+      },
+      "required": [
+        "summary"
+      ],
+      "title": "parameters",
+      "type": "object"
+    },
+    "strict": false
+  }
+]

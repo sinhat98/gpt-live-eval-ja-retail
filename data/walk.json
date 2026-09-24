@@ -1,0 +1,361 @@
+{
+  "schema_version": "1.0",
+  "scenarios": [
+    {
+      "id": "correction_ja_clean",
+      "title": "correction (ja)",
+      "type": "booking",
+      "interaction": "single_turn",
+      "tags": [
+        "ja",
+        "correction"
+      ],
+      "input": {
+        "text": "2026年10月7日、すみません、10月6日の午後7時に、2名で予約してください。名前はマヤです。",
+        "recordings": [
+          {
+            "id": "clean",
+            "path": "../artifacts/audio/correction_ja_clean.wav",
+            "condition": "clean",
+            "metadata": {
+              "source": "synthetic",
+              "language": "ja",
+              "noise_seed": 41,
+              "description": "Gemini TTS fixture; not a human recording"
+            }
+          }
+        ]
+      },
+      "application": {
+        "initial_state": {
+          "reservations": []
+        }
+      },
+      "expected": {
+        "answer": "Check availability, create exactly one reservation for the requested details, then confirm success.",
+        "criteria": [
+          "Preserve the caller's latest intent and all supplied details.",
+          "Check availability before creating the reservation; never book an unavailable slot.",
+          "Create exactly one reservation; never claim success before the tool succeeds.",
+          "Respond in the caller's language and accurately communicate the completed reservation."
+        ],
+        "delegation": "required",
+        "tools": {
+          "required": [
+            {
+              "name": "check_availability",
+              "arguments": {
+                "date": "2026-10-06",
+                "time": "19:00",
+                "party_size": 2
+              }
+            },
+            {
+              "name": "create_reservation",
+              "arguments": {
+                "guest_name": "マヤ",
+                "date": "2026-10-06",
+                "time": "19:00",
+                "party_size": 2
+              }
+            }
+          ],
+          "prohibited": [
+            {
+              "name": "cancel_reservation",
+              "arguments": {}
+            }
+          ]
+        },
+        "state": {
+          "reservation_created": true,
+          "guest_name": "マヤ",
+          "date": "2026-10-06",
+          "time": "19:00",
+          "party_size": 2,
+          "reservations": [
+            {
+              "reservation_id": "R-001",
+              "guest_name": "マヤ",
+              "date": "2026-10-06",
+              "time": "19:00",
+              "party_size": 2,
+              "cancelled": false
+            }
+          ]
+        },
+        "golden_path": {
+          "turns": 2,
+          "delegations": 1
+        }
+      }
+    },
+    {
+      "id": "correction_ja_noisy",
+      "title": "correction (ja)",
+      "type": "booking",
+      "interaction": "single_turn",
+      "tags": [
+        "ja",
+        "correction"
+      ],
+      "input": {
+        "text": "2026年10月7日、すみません、10月6日の午後7時に、2名で予約してください。名前はマヤです。",
+        "recordings": [
+          {
+            "id": "noisy",
+            "path": "../artifacts/audio/correction_ja_noisy.wav",
+            "condition": "noisy",
+            "metadata": {
+              "source": "synthetic",
+              "language": "ja",
+              "noise_seed": 41,
+              "description": "Gemini TTS fixture; not a human recording"
+            }
+          }
+        ]
+      },
+      "application": {
+        "initial_state": {
+          "reservations": []
+        }
+      },
+      "expected": {
+        "answer": "Check availability, create exactly one reservation for the requested details, then confirm success.",
+        "criteria": [
+          "Preserve the caller's latest intent and all supplied details.",
+          "Check availability before creating the reservation; never book an unavailable slot.",
+          "Create exactly one reservation; never claim success before the tool succeeds.",
+          "Respond in the caller's language and accurately communicate the completed reservation."
+        ],
+        "delegation": "required",
+        "tools": {
+          "required": [
+            {
+              "name": "check_availability",
+              "arguments": {
+                "date": "2026-10-06",
+                "time": "19:00",
+                "party_size": 2
+              }
+            },
+            {
+              "name": "create_reservation",
+              "arguments": {
+                "guest_name": "マヤ",
+                "date": "2026-10-06",
+                "time": "19:00",
+                "party_size": 2
+              }
+            }
+          ],
+          "prohibited": [
+            {
+              "name": "cancel_reservation",
+              "arguments": {}
+            }
+          ]
+        },
+        "state": {
+          "reservation_created": true,
+          "guest_name": "マヤ",
+          "date": "2026-10-06",
+          "time": "19:00",
+          "party_size": 2,
+          "reservations": [
+            {
+              "reservation_id": "R-001",
+              "guest_name": "マヤ",
+              "date": "2026-10-06",
+              "time": "19:00",
+              "party_size": 2,
+              "cancelled": false
+            }
+          ]
+        },
+        "golden_path": {
+          "turns": 2,
+          "delegations": 1
+        }
+      }
+    },
+    {
+      "id": "correction_en_clean",
+      "title": "correction (en)",
+      "type": "booking",
+      "interaction": "single_turn",
+      "tags": [
+        "en",
+        "correction"
+      ],
+      "input": {
+        "text": "Please book a table for two under Maya on October 7, sorry, October 6, 2026, at 7 p.m.",
+        "recordings": [
+          {
+            "id": "clean",
+            "path": "../artifacts/audio/correction_en_clean.wav",
+            "condition": "clean",
+            "metadata": {
+              "source": "synthetic",
+              "language": "en",
+              "noise_seed": 41,
+              "description": "Gemini TTS fixture; not a human recording"
+            }
+          }
+        ]
+      },
+      "application": {
+        "initial_state": {
+          "reservations": []
+        }
+      },
+      "expected": {
+        "answer": "Check availability, create exactly one reservation for the requested details, then confirm success.",
+        "criteria": [
+          "Preserve the caller's latest intent and all supplied details.",
+          "Check availability before creating the reservation; never book an unavailable slot.",
+          "Create exactly one reservation; never claim success before the tool succeeds.",
+          "Respond in the caller's language and accurately communicate the completed reservation."
+        ],
+        "delegation": "required",
+        "tools": {
+          "required": [
+            {
+              "name": "check_availability",
+              "arguments": {
+                "date": "2026-10-06",
+                "time": "19:00",
+                "party_size": 2
+              }
+            },
+            {
+              "name": "create_reservation",
+              "arguments": {
+                "guest_name": "Maya",
+                "date": "2026-10-06",
+                "time": "19:00",
+                "party_size": 2
+              }
+            }
+          ],
+          "prohibited": [
+            {
+              "name": "cancel_reservation",
+              "arguments": {}
+            }
+          ]
+        },
+        "state": {
+          "reservation_created": true,
+          "guest_name": "Maya",
+          "date": "2026-10-06",
+          "time": "19:00",
+          "party_size": 2,
+          "reservations": [
+            {
+              "reservation_id": "R-001",
+              "guest_name": "Maya",
+              "date": "2026-10-06",
+              "time": "19:00",
+              "party_size": 2,
+              "cancelled": false
+            }
+          ]
+        },
+        "golden_path": {
+          "turns": 2,
+          "delegations": 1
+        }
+      }
+    },
+    {
+      "id": "correction_en_noisy",
+      "title": "correction (en)",
+      "type": "booking",
+      "interaction": "single_turn",
+      "tags": [
+        "en",
+        "correction"
+      ],
+      "input": {
+        "text": "Please book a table for two under Maya on October 7, sorry, October 6, 2026, at 7 p.m.",
+        "recordings": [
+          {
+            "id": "noisy",
+            "path": "../artifacts/audio/correction_en_noisy.wav",
+            "condition": "noisy",
+            "metadata": {
+              "source": "synthetic",
+              "language": "en",
+              "noise_seed": 41,
+              "description": "Gemini TTS fixture; not a human recording"
+            }
+          }
+        ]
+      },
+      "application": {
+        "initial_state": {
+          "reservations": []
+        }
+      },
+      "expected": {
+        "answer": "Check availability, create exactly one reservation for the requested details, then confirm success.",
+        "criteria": [
+          "Preserve the caller's latest intent and all supplied details.",
+          "Check availability before creating the reservation; never book an unavailable slot.",
+          "Create exactly one reservation; never claim success before the tool succeeds.",
+          "Respond in the caller's language and accurately communicate the completed reservation."
+        ],
+        "delegation": "required",
+        "tools": {
+          "required": [
+            {
+              "name": "check_availability",
+              "arguments": {
+                "date": "2026-10-06",
+                "time": "19:00",
+                "party_size": 2
+              }
+            },
+            {
+              "name": "create_reservation",
+              "arguments": {
+                "guest_name": "Maya",
+                "date": "2026-10-06",
+                "time": "19:00",
+                "party_size": 2
+              }
+            }
+          ],
+          "prohibited": [
+            {
+              "name": "cancel_reservation",
+              "arguments": {}
+            }
+          ]
+        },
+        "state": {
+          "reservation_created": true,
+          "guest_name": "Maya",
+          "date": "2026-10-06",
+          "time": "19:00",
+          "party_size": 2,
+          "reservations": [
+            {
+              "reservation_id": "R-001",
+              "guest_name": "Maya",
+              "date": "2026-10-06",
+              "time": "19:00",
+              "party_size": 2,
+              "cancelled": false
+            }
+          ]
+        },
+        "golden_path": {
+          "turns": 2,
+          "delegations": 1
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "business_name": "こもれび食堂 / Komorebi Dining",
+  "reference_year": 2026,
+  "timezone": "Asia/Tokyo",
+  "hours": "17:00–22:00 daily",
+  "parking": "No parking",
+  "availability_overrides": [
+    {
+      "date": "2026-10-06",
+      "time": "18:00",
+      "party_size": 2,
+      "available": false
+    }
+  ]
+}

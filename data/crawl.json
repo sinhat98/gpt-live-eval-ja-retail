@@ -1,0 +1,511 @@
+{
+  "schema_version": "1.0",
+  "scenarios": [
+    {
+      "id": "booking_ja",
+      "title": "booking (ja)",
+      "type": "booking",
+      "interaction": "single_turn",
+      "tags": [
+        "ja",
+        "booking"
+      ],
+      "input": {
+        "text": "2026年10月6日の午後7時に、2名で予約してください。名前はマヤです。"
+      },
+      "application": {
+        "initial_state": {
+          "reservations": []
+        }
+      },
+      "expected": {
+        "answer": "Check availability, create exactly one reservation for the requested details, then confirm success.",
+        "criteria": [
+          "Preserve the caller's latest intent and all supplied details.",
+          "Check availability before creating the reservation; never book an unavailable slot.",
+          "Create exactly one reservation; never claim success before the tool succeeds.",
+          "Respond in the caller's language and accurately communicate the completed reservation."
+        ],
+        "delegation": "required",
+        "tools": {
+          "required": [
+            {
+              "name": "check_availability",
+              "arguments": {
+                "date": "2026-10-06",
+                "time": "19:00",
+                "party_size": 2
+              }
+            },
+            {
+              "name": "create_reservation",
+              "arguments": {
+                "guest_name": "マヤ",
+                "date": "2026-10-06",
+                "time": "19:00",
+                "party_size": 2
+              }
+            }
+          ],
+          "prohibited": [
+            {
+              "name": "cancel_reservation",
+              "arguments": {}
+            }
+          ]
+        },
+        "state": {
+          "reservation_created": true,
+          "guest_name": "マヤ",
+          "date": "2026-10-06",
+          "time": "19:00",
+          "party_size": 2,
+          "reservations": [
+            {
+              "reservation_id": "R-001",
+              "guest_name": "マヤ",
+              "date": "2026-10-06",
+              "time": "19:00",
+              "party_size": 2,
+              "cancelled": false
+            }
+          ]
+        },
+        "golden_path": {
+          "turns": 2,
+          "delegations": 1
+        }
+      }
+    },
+    {
+      "id": "correction_ja",
+      "title": "correction (ja)",
+      "type": "booking",
+      "interaction": "single_turn",
+      "tags": [
+        "ja",
+        "correction"
+      ],
+      "input": {
+        "text": "2026年10月7日、すみません、10月6日の午後7時に、2名で予約してください。名前はマヤです。"
+      },
+      "application": {
+        "initial_state": {
+          "reservations": []
+        }
+      },
+      "expected": {
+        "answer": "Check availability, create exactly one reservation for the requested details, then confirm success.",
+        "criteria": [
+          "Preserve the caller's latest intent and all supplied details.",
+          "Check availability before creating the reservation; never book an unavailable slot.",
+          "Create exactly one reservation; never claim success before the tool succeeds.",
+          "Respond in the caller's language and accurately communicate the completed reservation."
+        ],
+        "delegation": "required",
+        "tools": {
+          "required": [
+            {
+              "name": "check_availability",
+              "arguments": {
+                "date": "2026-10-06",
+                "time": "19:00",
+                "party_size": 2
+              }
+            },
+            {
+              "name": "create_reservation",
+              "arguments": {
+                "guest_name": "マヤ",
+                "date": "2026-10-06",
+                "time": "19:00",
+                "party_size": 2
+              }
+            }
+          ],
+          "prohibited": [
+            {
+              "name": "cancel_reservation",
+              "arguments": {}
+            }
+          ]
+        },
+        "state": {
+          "reservation_created": true,
+          "guest_name": "マヤ",
+          "date": "2026-10-06",
+          "time": "19:00",
+          "party_size": 2,
+          "reservations": [
+            {
+              "reservation_id": "R-001",
+              "guest_name": "マヤ",
+              "date": "2026-10-06",
+              "time": "19:00",
+              "party_size": 2,
+              "cancelled": false
+            }
+          ]
+        },
+        "golden_path": {
+          "turns": 2,
+          "delegations": 1
+        }
+      }
+    },
+    {
+      "id": "missing_name_ja",
+      "title": "missing_name (ja)",
+      "type": "clarification",
+      "interaction": "single_turn",
+      "tags": [
+        "ja",
+        "missing_name"
+      ],
+      "input": {
+        "text": "2026年10月6日の午後7時に、2名で予約してください。"
+      },
+      "application": {
+        "initial_state": {
+          "reservations": []
+        }
+      },
+      "expected": {
+        "answer": "Ask for the missing reservation name, without guessing or making a reservation.",
+        "criteria": [
+          "Ask for the guest name in the caller's language.",
+          "Do not call tools or invent a name."
+        ],
+        "delegation": "forbidden",
+        "tools": {
+          "required": [],
+          "prohibited": [
+            {
+              "name": "create_reservation",
+              "arguments": {}
+            },
+            {
+              "name": "cancel_reservation",
+              "arguments": {}
+            }
+          ]
+        },
+        "state": {
+          "unchanged": true
+        },
+        "golden_path": {
+          "turns": 2,
+          "delegations": 0
+        }
+      }
+    },
+    {
+      "id": "availability_ja",
+      "title": "availability (ja)",
+      "type": "availability",
+      "interaction": "single_turn",
+      "tags": [
+        "ja",
+        "availability"
+      ],
+      "input": {
+        "text": "2026年10月6日の午後7時、2名の空席はありますか？空席の確認だけで、まだ予約はしないでください。"
+      },
+      "application": {
+        "initial_state": {
+          "reservations": []
+        }
+      },
+      "expected": {
+        "answer": "Report availability without making a reservation.",
+        "criteria": [
+          "Check the requested slot and report the result in the caller's language.",
+          "Do not book."
+        ],
+        "delegation": "required",
+        "tools": {
+          "required": [
+            {
+              "name": "check_availability",
+              "arguments": {
+                "date": "2026-10-06",
+                "time": "19:00",
+                "party_size": 2
+              }
+            }
+          ],
+          "prohibited": [
+            {
+              "name": "create_reservation",
+              "arguments": {}
+            },
+            {
+              "name": "cancel_reservation",
+              "arguments": {}
+            }
+          ]
+        },
+        "state": {
+          "unchanged": true
+        },
+        "golden_path": {
+          "turns": 2,
+          "delegations": 1
+        }
+      }
+    },
+    {
+      "id": "booking_en",
+      "title": "booking (en)",
+      "type": "booking",
+      "interaction": "single_turn",
+      "tags": [
+        "en",
+        "booking"
+      ],
+      "input": {
+        "text": "Please book a table for two under Maya on October 6, 2026, at 7 p.m."
+      },
+      "application": {
+        "initial_state": {
+          "reservations": []
+        }
+      },
+      "expected": {
+        "answer": "Check availability, create exactly one reservation for the requested details, then confirm success.",
+        "criteria": [
+          "Preserve the caller's latest intent and all supplied details.",
+          "Check availability before creating the reservation; never book an unavailable slot.",
+          "Create exactly one reservation; never claim success before the tool succeeds.",
+          "Respond in the caller's language and accurately communicate the completed reservation."
+        ],
+        "delegation": "required",
+        "tools": {
+          "required": [
+            {
+              "name": "check_availability",
+              "arguments": {
+                "date": "2026-10-06",
+                "time": "19:00",
+                "party_size": 2
+              }
+            },
+            {
+              "name": "create_reservation",
+              "arguments": {
+                "guest_name": "Maya",
+                "date": "2026-10-06",
+                "time": "19:00",
+                "party_size": 2
+              }
+            }
+          ],
+          "prohibited": [
+            {
+              "name": "cancel_reservation",
+              "arguments": {}
+            }
+          ]
+        },
+        "state": {
+          "reservation_created": true,
+          "guest_name": "Maya",
+          "date": "2026-10-06",
+          "time": "19:00",
+          "party_size": 2,
+          "reservations": [
+            {
+              "reservation_id": "R-001",
+              "guest_name": "Maya",
+              "date": "2026-10-06",
+              "time": "19:00",
+              "party_size": 2,
+              "cancelled": false
+            }
+          ]
+        },
+        "golden_path": {
+          "turns": 2,
+          "delegations": 1
+        }
+      }
+    },
+    {
+      "id": "correction_en",
+      "title": "correction (en)",
+      "type": "booking",
+      "interaction": "single_turn",
+      "tags": [
+        "en",
+        "correction"
+      ],
+      "input": {
+        "text": "Please book a table for two under Maya on October 7, sorry, October 6, 2026, at 7 p.m."
+      },
+      "application": {
+        "initial_state": {
+          "reservations": []
+        }
+      },
+      "expected": {
+        "answer": "Check availability, create exactly one reservation for the requested details, then confirm success.",
+        "criteria": [
+          "Preserve the caller's latest intent and all supplied details.",
+          "Check availability before creating the reservation; never book an unavailable slot.",
+          "Create exactly one reservation; never claim success before the tool succeeds.",
+          "Respond in the caller's language and accurately communicate the completed reservation."
+        ],
+        "delegation": "required",
+        "tools": {
+          "required": [
+            {
+              "name": "check_availability",
+              "arguments": {
+                "date": "2026-10-06",
+                "time": "19:00",
+                "party_size": 2
+              }
+            },
+            {
+              "name": "create_reservation",
+              "arguments": {
+                "guest_name": "Maya",
+                "date": "2026-10-06",
+                "time": "19:00",
+                "party_size": 2
+              }
+            }
+          ],
+          "prohibited": [
+            {
+              "name": "cancel_reservation",
+              "arguments": {}
+            }
+          ]
+        },
+        "state": {
+          "reservation_created": true,
+          "guest_name": "Maya",
+          "date": "2026-10-06",
+          "time": "19:00",
+          "party_size": 2,
+          "reservations": [
+            {
+              "reservation_id": "R-001",
+              "guest_name": "Maya",
+              "date": "2026-10-06",
+              "time": "19:00",
+              "party_size": 2,
+              "cancelled": false
+            }
+          ]
+        },
+        "golden_path": {
+          "turns": 2,
+          "delegations": 1
+        }
+      }
+    },
+    {
+      "id": "missing_name_en",
+      "title": "missing_name (en)",
+      "type": "clarification",
+      "interaction": "single_turn",
+      "tags": [
+        "en",
+        "missing_name"
+      ],
+      "input": {
+        "text": "Please book a table for two on October 6, 2026, at 7 p.m."
+      },
+      "application": {
+        "initial_state": {
+          "reservations": []
+        }
+      },
+      "expected": {
+        "answer": "Ask for the missing reservation name, without guessing or making a reservation.",
+        "criteria": [
+          "Ask for the guest name in the caller's language.",
+          "Do not call tools or invent a name."
+        ],
+        "delegation": "forbidden",
+        "tools": {
+          "required": [],
+          "prohibited": [
+            {
+              "name": "create_reservation",
+              "arguments": {}
+            },
+            {
+              "name": "cancel_reservation",
+              "arguments": {}
+            }
+          ]
+        },
+        "state": {
+          "unchanged": true
+        },
+        "golden_path": {
+          "turns": 2,
+          "delegations": 0
+        }
+      }
+    },
+    {
+      "id": "availability_en",
+      "title": "availability (en)",
+      "type": "availability",
+      "interaction": "single_turn",
+      "tags": [
+        "en",
+        "availability"
+      ],
+      "input": {
+        "text": "Do you have a table for two on October 6, 2026, at 7 p.m.? Just check availability; don't book yet."
+      },
+      "application": {
+        "initial_state": {
+          "reservations": []
+        }
+      },
+      "expected": {
+        "answer": "Report availability without making a reservation.",
+        "criteria": [
+          "Check the requested slot and report the result in the caller's language.",
+          "Do not book."
+        ],
+        "delegation": "required",
+        "tools": {
+          "required": [
+            {
+              "name": "check_availability",
+              "arguments": {
+                "date": "2026-10-06",
+                "time": "19:00",
+                "party_size": 2
+              }
+            }
+          ],
+          "prohibited": [
+            {
+              "name": "create_reservation",
+              "arguments": {}
+            },
+            {
+              "name": "cancel_reservation",
+              "arguments": {}
+            }
+          ]
+        },
+        "state": {
+          "unchanged": true
+        },
+        "golden_path": {
+          "turns": 2,
+          "delegations": 1
+        }
+      }
+    }
+  ]
+}

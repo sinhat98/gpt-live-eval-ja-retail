@@ -1,0 +1,232 @@
+{
+  "schema_version": "1.0",
+  "scenarios": [
+    {
+      "id": "retail-21-checkpoint",
+      "title": "日本語retail 21の意向変更",
+      "type": "retail",
+      "interaction": "single_turn",
+      "tags": [
+        "ja",
+        "retail",
+        "checkpoint"
+      ],
+      "input": {
+        "text": "その前に、アイテムID1656367028も1421289881へ変更してください。もしかすると最初の番号は製品IDかもしれません。両方まとめた内容と差額を教えてください。",
+        "context": {
+          "history": [
+            {
+              "role": "user",
+              "text": "佐々木明美です。登録電話番号は050-0000-0008です。"
+            },
+            {
+              "role": "assistant",
+              "text": "本人確認ができました。ご注文内容を確認しました。"
+            },
+            {
+              "role": "user",
+              "text": "靴を4107812777に変更して、差額はギフトカードで払いたいです。"
+            },
+            {
+              "role": "assistant",
+              "text": "保留中の注文#W9911714の靴を4107812777へ変更し、差額1242.0円を登録済みギフトカードで支払います。この内容でよろしいですか。"
+            }
+          ],
+          "summary": "この会話で実行済みのツール結果（将来の正解操作は含まない）:\n[{\"name\": \"find_user_id_by_name_phone\", \"arguments\": {\"first_name\": \"明美\", \"last_name\": \"佐々木\", \"phone_number\": \"050-0000-0008\"}, \"call_id\": \"checkpoint-0\", \"output\": {\"ok\": true, \"result\": \"akemi_sasaki_1261\"}, \"status\": \"completed\"}, {\"name\": \"get_user_details\", \"arguments\": {\"user_id\": \"akemi_sasaki_1261\"}, \"call_id\": \"checkpoint-1\", \"output\": {\"ok\": true, \"result\": {\"user_id\": \"akemi_sasaki_1261\", \"name\": {\"first_name\": \"明美\", \"last_name\": \"佐々木\"}, \"address\": {\"address1\": \"脚折23丁目16番3号\", \"address2\": \"コート506\", \"city\": \"調布市\", \"country\": \"日本\", \"state\": \"富山県\", \"zip\": \"689-0831\"}, \"email\": \"akemi.sasaki8085@example.com\", \"payment_methods\": {\"paypal_3798357\": {\"source\": \"PayPal\", \"id\": \"paypal_3798357\"}, \"gift_card_4332117\": {\"source\": \"ギフトカード\", \"id\": \"gift_card_4332117\", \"balance\": 12900.0}}, \"orders\": [\"#W4967593\", \"#W9911714\", \"#W5733668\"]}}, \"status\": \"completed\"}, {\"name\": \"get_order_details\", \"arguments\": {\"order_id\": \"#W4967593\"}, \"call_id\": \"checkpoint-2\", \"output\": {\"ok\": true, \"result\": {\"order_id\": \"#W4967593\", \"user_id\": \"akemi_sasaki_1261\", \"address\": {\"address1\": \"脚折23丁目16番3号\", \"address2\": \"コート506\", \"city\": \"調布市\", \"country\": \"日本\", \"state\": \"富山県\", \"zip\": \"689-0831\"}, \"items\": [{\"name\": \"オフィスチェア\", \"product_id\": \"4794339885\", \"item_id\": \"4168944673\", \"price\": 70773.0, \"options\": {\"material\": \"レザー\", \"color\": \"ブルー\", \"armrest\": \"なし\", \"backrest height\": \"スタンダード\"}}, {\"name\": \"電動歯ブラシ\", \"product_id\": \"7352963235\", \"item_id\": \"3320557165\", \"price\": 28300.0, \"options\": {\"color\": \"ブルー\", \"speed settings\": \"強\", \"battery type\": \"単3形乾電池\"}}, {\"name\": \"バックパック\", \"product_id\": \"2524789262\", \"item_id\": \"8054888773\", \"price\": 30904.0, \"options\": {\"color\": \"グレー\", \"size\": \"Sサイズ\", \"material\": \"ナイロン\", \"compartment\": \"ノートPC用\"}}, {\"name\": \"腕時計\", \"product_id\": \"6066914160\", \"item_id\": \"1355937109\", \"price\": 297795.0, \"options\": {\"strap material\": \"レザー\", \"dial color\": \"ホワイト\"}}], \"status\": \"処理済み\", \"fulfillments\": [{\"tracking_id\": [\"663395959263\"], \"item_ids\": [\"4168944673\", \"3320557165\", \"8054888773\", \"1355937109\"]}], \"payment_history\": [{\"transaction_type\": \"payment\", \"amount\": 427772.0, \"payment_method_id\": \"gift_card_4332117\"}], \"cancel_reason\": null, \"exchange_items\": null, \"exchange_new_items\": null, \"exchange_payment_method_id\": null, \"exchange_price_difference\": null, \"return_items\": null, \"return_payment_method_id\": null}}, \"status\": \"completed\"}, {\"name\": \"get_order_details\", \"arguments\": {\"order_id\": \"#W9911714\"}, \"call_id\": \"checkpoint-3\", \"output\": {\"ok\": true, \"result\": {\"order_id\": \"#W9911714\", \"user_id\": \"akemi_sasaki_1261\", \"address\": {\"address1\": \"脚折23丁目16番3号\", \"address2\": \"コート506\", \"city\": \"調布市\", \"country\": \"日本\", \"state\": \"富山県\", \"zip\": \"689-0831\"}, \"items\": [{\"name\": \"水筒\", \"product_id\": \"8310926033\", \"item_id\": \"2366567022\", \"price\": 8106.0, \"options\": {\"capacity\": \"1000ml\", \"material\": \"ステンレス\", \"color\": \"ブルー\"}}, {\"name\": \"メカニカルキーボード\", \"product_id\": \"1656367028\", \"item_id\": \"1340995114\", \"price\": 35269.0, \"options\": {\"switch type\": \"タクタイル\", \"backlight\": \"なし\", \"size\": \"フルサイズ\"}}, {\"name\": \"ランニングシューズ\", \"product_id\": \"6938111410\", \"item_id\": \"9791469541\", \"price\": 22057.0, \"options\": {\"size\": \"9\", \"color\": \"イエロー\", \"material\": \"合成素材\", \"sole\": \"ラバー\"}}, {\"name\": \"メイクキット\", \"product_id\": \"5149340237\", \"item_id\": \"1763705424\", \"price\": 35316.0, \"options\": {\"skin tone\": \"ダーク\", \"kit size\": \"プロフェッショナル\", \"brand\": \"ブランドC\"}}], \"status\": \"保留中\", \"fulfillments\": [], \"payment_history\": [{\"transaction_type\": \"payment\", \"amount\": 100748.0, \"payment_method_id\": \"paypal_3798357\"}], \"cancel_reason\": null, \"exchange_items\": null, \"exchange_new_items\": null, \"exchange_payment_method_id\": null, \"exchange_price_difference\": null, \"return_items\": null, \"return_payment_method_id\": null}}, \"status\": \"completed\"}, {\"name\": \"get_order_details\", \"arguments\": {\"order_id\": \"#W5733668\"}, \"call_id\": \"checkpoint-4\", \"output\": {\"ok\": true, \"result\": {\"order_id\": \"#W5733668\", \"user_id\": \"akemi_sasaki_1261\", \"address\": {\"address1\": \"脚折23丁目16番3号\", \"address2\": \"コート506\", \"city\": \"調布市\", \"country\": \"日本\", \"state\": \"富山県\", \"zip\": \"689-0831\"}, \"items\": [{\"name\": \"オフィスチェア\", \"product_id\": \"4794339885\", \"item_id\": \"8323284863\", \"price\": 76686.0, \"options\": {\"material\": \"ファブリック（布地）\", \"color\": \"ブルー\", \"armrest\": \"調整可能\", \"backrest height\": \"スタンダード\"}}, {\"name\": \"モバイルバッテリー\", \"product_id\": \"6942297802\", \"item_id\": \"7866854614\", \"price\": 15823.0, \"options\": {\"capacity\": \"5000mAh\", \"output\": \"USB-C\", \"color\": \"ホワイト\"}}, {\"name\": \"電気ケトル\", \"product_id\": \"1075968781\", \"item_id\": \"4064702754\", \"price\": 23967.0, \"options\": {\"capacity\": \"2L\", \"material\": \"ガラス\", \"color\": \"ホワイト\"}}], \"status\": \"処理済み\", \"fulfillments\": [{\"tracking_id\": [\"365054630723\"], \"item_ids\": [\"8323284863\", \"7866854614\", \"4064702754\"]}], \"payment_history\": [{\"transaction_type\": \"payment\", \"amount\": 116476.0, \"payment_method_id\": \"paypal_3798357\"}], \"cancel_reason\": null, \"exchange_items\": null, \"exchange_new_items\": null, \"exchange_payment_method_id\": null, \"exchange_price_difference\": null, \"return_items\": null, \"return_payment_method_id\": null}}, \"status\": \"completed\"}, {\"name\": \"get_item_details\", \"arguments\": {\"item_id\": \"4107812777\"}, \"call_id\": \"checkpoint-5\", \"output\": {\"ok\": true, \"result\": {\"item_id\": \"4107812777\", \"options\": {\"size\": \"9\", \"color\": \"ブラック\", \"material\": \"合成素材\", \"sole\": \"ラバー\"}, \"available\": true, \"price\": 23299.0}}, \"status\": \"completed\"}, {\"name\": \"get_product_details\", \"arguments\": {\"product_id\": \"6938111410\"}, \"call_id\": \"checkpoint-6\", \"output\": {\"ok\": true, \"result\": {\"name\": \"ランニングシューズ\", \"product_id\": \"6938111410\", \"variants\": {\"4153505238\": {\"item_id\": \"4153505238\", \"options\": {\"size\": \"8\", \"color\": \"レッド\", \"material\": \"レザー\", \"sole\": \"EVA\"}, \"available\": true, \"price\": 23800.0}, \"1775591963\": {\"item_id\": \"1775591963\", \"options\": {\"size\": \"10\", \"color\": \"ホワイト\", \"material\": \"レザー\", \"sole\": \"EVA\"}, \"available\": true, \"price\": 23212.0}, \"9635758562\": {\"item_id\": \"9635758562\", \"options\": {\"size\": \"9\", \"color\": \"ホワイト\", \"material\": \"メッシュ\", \"sole\": \"ラバー\"}, \"available\": true, \"price\": 22342.0}, \"9791469541\": {\"item_id\": \"9791469541\", \"options\": {\"size\": \"9\", \"color\": \"イエロー\", \"material\": \"合成素材\", \"sole\": \"ラバー\"}, \"available\": true, \"price\": 22057.0}, \"4107812777\": {\"item_id\": \"4107812777\", \"options\": {\"size\": \"9\", \"color\": \"ブラック\", \"material\": \"合成素材\", \"sole\": \"ラバー\"}, \"available\": true, \"price\": 23299.0}}}}, \"status\": \"completed\"}, {\"name\": \"calculate\", \"arguments\": {\"expression\": \"23299.0 - 22057.0\"}, \"call_id\": \"checkpoint-7\", \"output\": {\"ok\": true, \"result\": \"1242.0\"}, \"status\": \"completed\"}]"
+        }
+      },
+      "application": {
+        "initial_state": {
+          "task_id": "21",
+          "checkpoint_calls": [
+            {
+              "name": "find_user_id_by_name_phone",
+              "arguments": {
+                "first_name": "明美",
+                "last_name": "佐々木",
+                "phone_number": "050-0000-0008"
+              },
+              "call_id": "checkpoint-0"
+            },
+            {
+              "name": "get_user_details",
+              "arguments": {
+                "user_id": "akemi_sasaki_1261"
+              },
+              "call_id": "checkpoint-1"
+            },
+            {
+              "name": "get_order_details",
+              "arguments": {
+                "order_id": "#W4967593"
+              },
+              "call_id": "checkpoint-2"
+            },
+            {
+              "name": "get_order_details",
+              "arguments": {
+                "order_id": "#W9911714"
+              },
+              "call_id": "checkpoint-3"
+            },
+            {
+              "name": "get_order_details",
+              "arguments": {
+                "order_id": "#W5733668"
+              },
+              "call_id": "checkpoint-4"
+            },
+            {
+              "name": "get_item_details",
+              "arguments": {
+                "item_id": "4107812777"
+              },
+              "call_id": "checkpoint-5"
+            },
+            {
+              "name": "get_product_details",
+              "arguments": {
+                "product_id": "6938111410"
+              },
+              "call_id": "checkpoint-6"
+            },
+            {
+              "name": "calculate",
+              "arguments": {
+                "expression": "23299.0 - 22057.0"
+              },
+              "call_id": "checkpoint-7"
+            }
+          ]
+        }
+      },
+      "expected": {
+        "answer": "最新の変更範囲と条件を整理し、新しい内容への同意を求める。まだ書き込まない。",
+        "delegation": "required",
+        "golden_path": {
+          "turns": 2
+        }
+      }
+    },
+    {
+      "id": "retail-22-checkpoint",
+      "title": "日本語retail 22の意向変更",
+      "type": "retail",
+      "interaction": "single_turn",
+      "tags": [
+        "ja",
+        "retail",
+        "checkpoint"
+      ],
+      "input": {
+        "text": "やっぱり登録住所だけ元の住所に戻したいです。注文の配送先は今変更したままにしてください。戻す内容を確認させてください。",
+        "context": {
+          "history": [
+            {
+              "role": "user",
+              "text": "佐々木明美です。登録電話番号は050-0000-0008です。"
+            },
+            {
+              "role": "assistant",
+              "text": "本人確認ができました。ご注文内容を確認しました。"
+            },
+            {
+              "role": "user",
+              "text": "登録住所とすべての注文の住所を、〒100-0001東京都千代田区丸の内1-2-3へ変更してください。"
+            },
+            {
+              "role": "assistant",
+              "text": "登録住所と保留中の注文#W9911714の配送先をその住所へ変更します。他の注文は保留中ではなく変更できません。この2件を変更してよろしいですか。"
+            },
+            {
+              "role": "user",
+              "text": "はい、その2件の住所を変更してください。"
+            },
+            {
+              "role": "assistant",
+              "text": "登録住所と注文#W9911714の配送先を変更しました。元の登録住所は{'address1': '脚折23丁目16番3号', 'address2': 'コート506', 'city': '調布市', 'country': '日本', 'state': '富山県', 'zip': '689-0831'}でした。"
+            }
+          ],
+          "summary": "この会話で実行済みのツール結果（将来の正解操作は含まない）:\n[{\"name\": \"find_user_id_by_name_phone\", \"arguments\": {\"first_name\": \"明美\", \"last_name\": \"佐々木\", \"phone_number\": \"050-0000-0008\"}, \"call_id\": \"checkpoint-0\", \"output\": {\"ok\": true, \"result\": \"akemi_sasaki_1261\"}, \"status\": \"completed\"}, {\"name\": \"get_user_details\", \"arguments\": {\"user_id\": \"akemi_sasaki_1261\"}, \"call_id\": \"checkpoint-1\", \"output\": {\"ok\": true, \"result\": {\"user_id\": \"akemi_sasaki_1261\", \"name\": {\"first_name\": \"明美\", \"last_name\": \"佐々木\"}, \"address\": {\"address1\": \"脚折23丁目16番3号\", \"address2\": \"コート506\", \"city\": \"調布市\", \"country\": \"日本\", \"state\": \"富山県\", \"zip\": \"689-0831\"}, \"email\": \"akemi.sasaki8085@example.com\", \"payment_methods\": {\"paypal_3798357\": {\"source\": \"PayPal\", \"id\": \"paypal_3798357\"}, \"gift_card_4332117\": {\"source\": \"ギフトカード\", \"id\": \"gift_card_4332117\", \"balance\": 12900.0}}, \"orders\": [\"#W4967593\", \"#W9911714\", \"#W5733668\"]}}, \"status\": \"completed\"}, {\"name\": \"get_order_details\", \"arguments\": {\"order_id\": \"#W4967593\"}, \"call_id\": \"checkpoint-2\", \"output\": {\"ok\": true, \"result\": {\"order_id\": \"#W4967593\", \"user_id\": \"akemi_sasaki_1261\", \"address\": {\"address1\": \"脚折23丁目16番3号\", \"address2\": \"コート506\", \"city\": \"調布市\", \"country\": \"日本\", \"state\": \"富山県\", \"zip\": \"689-0831\"}, \"items\": [{\"name\": \"オフィスチェア\", \"product_id\": \"4794339885\", \"item_id\": \"4168944673\", \"price\": 70773.0, \"options\": {\"material\": \"レザー\", \"color\": \"ブルー\", \"armrest\": \"なし\", \"backrest height\": \"スタンダード\"}}, {\"name\": \"電動歯ブラシ\", \"product_id\": \"7352963235\", \"item_id\": \"3320557165\", \"price\": 28300.0, \"options\": {\"color\": \"ブルー\", \"speed settings\": \"強\", \"battery type\": \"単3形乾電池\"}}, {\"name\": \"バックパック\", \"product_id\": \"2524789262\", \"item_id\": \"8054888773\", \"price\": 30904.0, \"options\": {\"color\": \"グレー\", \"size\": \"Sサイズ\", \"material\": \"ナイロン\", \"compartment\": \"ノートPC用\"}}, {\"name\": \"腕時計\", \"product_id\": \"6066914160\", \"item_id\": \"1355937109\", \"price\": 297795.0, \"options\": {\"strap material\": \"レザー\", \"dial color\": \"ホワイト\"}}], \"status\": \"処理済み\", \"fulfillments\": [{\"tracking_id\": [\"663395959263\"], \"item_ids\": [\"4168944673\", \"3320557165\", \"8054888773\", \"1355937109\"]}], \"payment_history\": [{\"transaction_type\": \"payment\", \"amount\": 427772.0, \"payment_method_id\": \"gift_card_4332117\"}], \"cancel_reason\": null, \"exchange_items\": null, \"exchange_new_items\": null, \"exchange_payment_method_id\": null, \"exchange_price_difference\": null, \"return_items\": null, \"return_payment_method_id\": null}}, \"status\": \"completed\"}, {\"name\": \"get_order_details\", \"arguments\": {\"order_id\": \"#W9911714\"}, \"call_id\": \"checkpoint-3\", \"output\": {\"ok\": true, \"result\": {\"order_id\": \"#W9911714\", \"user_id\": \"akemi_sasaki_1261\", \"address\": {\"address1\": \"脚折23丁目16番3号\", \"address2\": \"コート506\", \"city\": \"調布市\", \"country\": \"日本\", \"state\": \"富山県\", \"zip\": \"689-0831\"}, \"items\": [{\"name\": \"水筒\", \"product_id\": \"8310926033\", \"item_id\": \"2366567022\", \"price\": 8106.0, \"options\": {\"capacity\": \"1000ml\", \"material\": \"ステンレス\", \"color\": \"ブルー\"}}, {\"name\": \"メカニカルキーボード\", \"product_id\": \"1656367028\", \"item_id\": \"1340995114\", \"price\": 35269.0, \"options\": {\"switch type\": \"タクタイル\", \"backlight\": \"なし\", \"size\": \"フルサイズ\"}}, {\"name\": \"ランニングシューズ\", \"product_id\": \"6938111410\", \"item_id\": \"9791469541\", \"price\": 22057.0, \"options\": {\"size\": \"9\", \"color\": \"イエロー\", \"material\": \"合成素材\", \"sole\": \"ラバー\"}}, {\"name\": \"メイクキット\", \"product_id\": \"5149340237\", \"item_id\": \"1763705424\", \"price\": 35316.0, \"options\": {\"skin tone\": \"ダーク\", \"kit size\": \"プロフェッショナル\", \"brand\": \"ブランドC\"}}], \"status\": \"保留中\", \"fulfillments\": [], \"payment_history\": [{\"transaction_type\": \"payment\", \"amount\": 100748.0, \"payment_method_id\": \"paypal_3798357\"}], \"cancel_reason\": null, \"exchange_items\": null, \"exchange_new_items\": null, \"exchange_payment_method_id\": null, \"exchange_price_difference\": null, \"return_items\": null, \"return_payment_method_id\": null}}, \"status\": \"completed\"}, {\"name\": \"get_order_details\", \"arguments\": {\"order_id\": \"#W5733668\"}, \"call_id\": \"checkpoint-4\", \"output\": {\"ok\": true, \"result\": {\"order_id\": \"#W5733668\", \"user_id\": \"akemi_sasaki_1261\", \"address\": {\"address1\": \"脚折23丁目16番3号\", \"address2\": \"コート506\", \"city\": \"調布市\", \"country\": \"日本\", \"state\": \"富山県\", \"zip\": \"689-0831\"}, \"items\": [{\"name\": \"オフィスチェア\", \"product_id\": \"4794339885\", \"item_id\": \"8323284863\", \"price\": 76686.0, \"options\": {\"material\": \"ファブリック（布地）\", \"color\": \"ブルー\", \"armrest\": \"調整可能\", \"backrest height\": \"スタンダード\"}}, {\"name\": \"モバイルバッテリー\", \"product_id\": \"6942297802\", \"item_id\": \"7866854614\", \"price\": 15823.0, \"options\": {\"capacity\": \"5000mAh\", \"output\": \"USB-C\", \"color\": \"ホワイト\"}}, {\"name\": \"電気ケトル\", \"product_id\": \"1075968781\", \"item_id\": \"4064702754\", \"price\": 23967.0, \"options\": {\"capacity\": \"2L\", \"material\": \"ガラス\", \"color\": \"ホワイト\"}}], \"status\": \"処理済み\", \"fulfillments\": [{\"tracking_id\": [\"365054630723\"], \"item_ids\": [\"8323284863\", \"7866854614\", \"4064702754\"]}], \"payment_history\": [{\"transaction_type\": \"payment\", \"amount\": 116476.0, \"payment_method_id\": \"paypal_3798357\"}], \"cancel_reason\": null, \"exchange_items\": null, \"exchange_new_items\": null, \"exchange_payment_method_id\": null, \"exchange_price_difference\": null, \"return_items\": null, \"return_payment_method_id\": null}}, \"status\": \"completed\"}, {\"name\": \"modify_user_address\", \"arguments\": {\"user_id\": \"akemi_sasaki_1261\", \"address1\": \"丸の内1-2-3\", \"address2\": \"\", \"city\": \"千代田区\", \"state\": \"東京都\", \"country\": \"日本\", \"zip\": \"100-0001\"}, \"call_id\": \"checkpoint-5\", \"output\": {\"ok\": true, \"result\": {\"user_id\": \"akemi_sasaki_1261\", \"name\": {\"first_name\": \"明美\", \"last_name\": \"佐々木\"}, \"address\": {\"address1\": \"丸の内1-2-3\", \"address2\": \"\", \"city\": \"千代田区\", \"country\": \"日本\", \"state\": \"東京都\", \"zip\": \"100-0001\"}, \"email\": \"akemi.sasaki8085@example.com\", \"payment_methods\": {\"paypal_3798357\": {\"source\": \"PayPal\", \"id\": \"paypal_3798357\"}, \"gift_card_4332117\": {\"source\": \"ギフトカード\", \"id\": \"gift_card_4332117\", \"balance\": 12900.0}}, \"orders\": [\"#W4967593\", \"#W9911714\", \"#W5733668\"]}}, \"status\": \"completed\"}, {\"name\": \"modify_pending_order_address\", \"arguments\": {\"order_id\": \"#W9911714\", \"address1\": \"丸の内1-2-3\", \"address2\": \"\", \"city\": \"千代田区\", \"state\": \"東京都\", \"country\": \"日本\", \"zip\": \"100-0001\"}, \"call_id\": \"checkpoint-6\", \"output\": {\"ok\": true, \"result\": {\"order_id\": \"#W9911714\", \"user_id\": \"akemi_sasaki_1261\", \"address\": {\"address1\": \"丸の内1-2-3\", \"address2\": \"\", \"city\": \"千代田区\", \"country\": \"日本\", \"state\": \"東京都\", \"zip\": \"100-0001\"}, \"items\": [{\"name\": \"水筒\", \"product_id\": \"8310926033\", \"item_id\": \"2366567022\", \"price\": 8106.0, \"options\": {\"capacity\": \"1000ml\", \"material\": \"ステンレス\", \"color\": \"ブルー\"}}, {\"name\": \"メカニカルキーボード\", \"product_id\": \"1656367028\", \"item_id\": \"1340995114\", \"price\": 35269.0, \"options\": {\"switch type\": \"タクタイル\", \"backlight\": \"なし\", \"size\": \"フルサイズ\"}}, {\"name\": \"ランニングシューズ\", \"product_id\": \"6938111410\", \"item_id\": \"9791469541\", \"price\": 22057.0, \"options\": {\"size\": \"9\", \"color\": \"イエロー\", \"material\": \"合成素材\", \"sole\": \"ラバー\"}}, {\"name\": \"メイクキット\", \"product_id\": \"5149340237\", \"item_id\": \"1763705424\", \"price\": 35316.0, \"options\": {\"skin tone\": \"ダーク\", \"kit size\": \"プロフェッショナル\", \"brand\": \"ブランドC\"}}], \"status\": \"保留中\", \"fulfillments\": [], \"payment_history\": [{\"transaction_type\": \"payment\", \"amount\": 100748.0, \"payment_method_id\": \"paypal_3798357\"}], \"cancel_reason\": null, \"exchange_items\": null, \"exchange_new_items\": null, \"exchange_payment_method_id\": null, \"exchange_price_difference\": null, \"return_items\": null, \"return_payment_method_id\": null}}, \"status\": \"completed\"}]"
+        }
+      },
+      "application": {
+        "initial_state": {
+          "task_id": "22",
+          "checkpoint_calls": [
+            {
+              "name": "find_user_id_by_name_phone",
+              "arguments": {
+                "first_name": "明美",
+                "last_name": "佐々木",
+                "phone_number": "050-0000-0008"
+              },
+              "call_id": "checkpoint-0"
+            },
+            {
+              "name": "get_user_details",
+              "arguments": {
+                "user_id": "akemi_sasaki_1261"
+              },
+              "call_id": "checkpoint-1"
+            },
+            {
+              "name": "get_order_details",
+              "arguments": {
+                "order_id": "#W4967593"
+              },
+              "call_id": "checkpoint-2"
+            },
+            {
+              "name": "get_order_details",
+              "arguments": {
+                "order_id": "#W9911714"
+              },
+              "call_id": "checkpoint-3"
+            },
+            {
+              "name": "get_order_details",
+              "arguments": {
+                "order_id": "#W5733668"
+              },
+              "call_id": "checkpoint-4"
+            },
+            {
+              "name": "modify_user_address",
+              "arguments": {
+                "user_id": "akemi_sasaki_1261",
+                "address1": "丸の内1-2-3",
+                "address2": "",
+                "city": "千代田区",
+                "state": "東京都",
+                "country": "日本",
+                "zip": "100-0001"
+              },
+              "call_id": "checkpoint-5"
+            },
+            {
+              "name": "modify_pending_order_address",
+              "arguments": {
+                "order_id": "#W9911714",
+                "address1": "丸の内1-2-3",
+                "address2": "",
+                "city": "千代田区",
+                "state": "東京都",
+                "country": "日本",
+                "zip": "100-0001"
+              },
+              "call_id": "checkpoint-6"
+            }
+          ]
+        }
+      },
+      "expected": {
+        "answer": "最新の変更範囲と条件を整理し、新しい内容への同意を求める。まだ書き込まない。",
+        "delegation": "required",
+        "golden_path": {
+          "turns": 2
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,737 @@
+{
+  "repository": "https://github.com/openai/openai-cookbook",
+  "commit": "9aad95f0aa4f8e12991ef9b9201df28747860bfc",
+  "subdirectory": "examples/audio/duplex_voice_agent_evaluation",
+  "retrieved_at": "2026-09-16",
+  "omitted": [
+    "*.png",
+    "recorded-example/",
+    "*.wav except walk_harness/data/audio/restaurant_001.wav"
+  ],
+  "modifications": [
+    "assistants/resources.py: external prompt and facts paths",
+    "crawl_harness/evaluate.py: Gemini TTS dispatch and caller voice",
+    "shared/audio/gemini.py: Gemini REST adapter",
+    "assistants/resources.py: retail executor and external full tool schema selection",
+    "crawl_harness/audio_cache.py: include Gemini synthesis instructions in cache identity",
+    "run_harness/simulation/gpt_live_runner.py: observer state projection for large retail DB; avoid empty expected-state snapshots"
+  ],
+  "files": [
+    {
+      "path": ".env.example",
+      "git_blob_sha": "c854542233fb26ee40f9a61097bde10fcbdae540"
+    },
+    {
+      "path": ".gitignore",
+      "git_blob_sha": "b30a9ac944913860207d52e01e3d8f6b26dd190f"
+    },
+    {
+      "path": "README.md",
+      "git_blob_sha": "58addaf335d855d5464daaab1742959e9d94d0d8"
+    },
+    {
+      "path": "assistants/README.md",
+      "git_blob_sha": "296bd270ad211724b41fe5b8c343123c1dfb4cd2"
+    },
+    {
+      "path": "assistants/__init__.py",
+      "git_blob_sha": "29fddf2a9712594f534b471cc4ba9c64eb62696a"
+    },
+    {
+      "path": "assistants/client/README.md",
+      "git_blob_sha": "fd2adcaaa6bb3998109e20c17573705507754e53"
+    },
+    {
+      "path": "assistants/client/__init__.py",
+      "git_blob_sha": "8f224a3e83301a29d003cdbbdce903e76b74914a"
+    },
+    {
+      "path": "assistants/client/assistant.py",
+      "git_blob_sha": "1e7fb1396db57cbb7bc6b845921f7297e77eb180"
+    },
+    {
+      "path": "assistants/client/backend.py",
+      "git_blob_sha": "b5dc5724a8dc64f97e875f2145f5eeca5d08434e"
+    },
+    {
+      "path": "assistants/client/delegation.py",
+      "git_blob_sha": "84c4ba45657452c570e92cbced74b2d759e42612"
+    },
+    {
+      "path": "assistants/client/memory.py",
+      "git_blob_sha": "b1a4eec1c90cb873096a3256570c8742204a0224"
+    },
+    {
+      "path": "assistants/client/openai_backend.py",
+      "git_blob_sha": "83d9b7b1af7e930923f1d6450c52af4aaa14a2be"
+    },
+    {
+      "path": "assistants/client/prompts/backend.txt",
+      "git_blob_sha": "c65d89d9088d5b64bd55005f8902999d7ed80090"
+    },
+    {
+      "path": "assistants/client/protocol.py",
+      "git_blob_sha": "3e192d36f109834d196c285f75f22acf18178b92"
+    },
+    {
+      "path": "assistants/client/remote.py",
+      "git_blob_sha": "bb33ef32a8e392b20fe6d3ce2d8dfbdf5e10f142"
+    },
+    {
+      "path": "assistants/client/security.py",
+      "git_blob_sha": "32e3cac292fa9f1ee5c30a8968afdf2d8e15853b"
+    },
+    {
+      "path": "assistants/client/service.py",
+      "git_blob_sha": "ee9c66828798e0c7dc4f3d23acac0bde86f41e2b"
+    },
+    {
+      "path": "assistants/client/service_protocol.py",
+      "git_blob_sha": "7ef41ef05163742d0c243930d95e341d15bb768e"
+    },
+    {
+      "path": "assistants/client/session.py",
+      "git_blob_sha": "1692f86fe6a373db8199d47d4f5c3eb6b32d228b"
+    },
+    {
+      "path": "assistants/client/tools/__init__.py",
+      "git_blob_sha": "853c231f5c691bb103310136e0996b3e6bedbf2c"
+    },
+    {
+      "path": "assistants/client/tools/definitions.json",
+      "git_blob_sha": "561a5bd8881388513fe15e1292bf0fee5d0ef7c0"
+    },
+    {
+      "path": "assistants/client/tools/restaurant.py",
+      "git_blob_sha": "45adbf54efdcb3e9a14f8b6b8ae0b165a6dc5f75"
+    },
+    {
+      "path": "assistants/client/tools/restaurant_facts.json",
+      "git_blob_sha": "080d19e9ba3267cd35322a1199503e1d4cc5ba50"
+    },
+    {
+      "path": "assistants/client/transport.py",
+      "git_blob_sha": "53347373fa8fcf3d94bece39bb8e3b1908d379e4"
+    },
+    {
+      "path": "assistants/config.py",
+      "git_blob_sha": "7f339f0d59cc3c0b6b32125f1a6b5b814472adb4"
+    },
+    {
+      "path": "assistants/errors.py",
+      "git_blob_sha": "a8eb702b8cd1e2ed17c5d6a87b19c93dbe5c076d"
+    },
+    {
+      "path": "assistants/frontend/README.md",
+      "git_blob_sha": "bb079c7f78d4cbcf981fa09664b54b3cefb1d53e"
+    },
+    {
+      "path": "assistants/frontend/__init__.py",
+      "git_blob_sha": "9c38b156e85cffaea034be7bb1b22be7185621ac"
+    },
+    {
+      "path": "assistants/frontend/assistant.py",
+      "git_blob_sha": "cb27ef2136a46532a6877638e0f17b224db3d6d4"
+    },
+    {
+      "path": "assistants/frontend/connection.py",
+      "git_blob_sha": "2c658699d06a05e05d9b6606fd9477f58e85f70e"
+    },
+    {
+      "path": "assistants/frontend/events.py",
+      "git_blob_sha": "c21a354ea2a3369d85118ba327ff88677ce047cb"
+    },
+    {
+      "path": "assistants/frontend/prompts/assistant_first.txt",
+      "git_blob_sha": "7ce07ca020f95a6015014a57f2fc5bad7ad90f7f"
+    },
+    {
+      "path": "assistants/frontend/prompts/voice.txt",
+      "git_blob_sha": "70b33788e7ec4cc3edd137b2d3cdb1dbccece113"
+    },
+    {
+      "path": "assistants/frontend/security.py",
+      "git_blob_sha": "1326c21f92def1775b0d5d05f1a208d41dccb069"
+    },
+    {
+      "path": "assistants/frontend/transport.py",
+      "git_blob_sha": "033772756dc36921c8d2889f553413a4dd283f84"
+    },
+    {
+      "path": "assistants/lifecycle.py",
+      "git_blob_sha": "1e54db4ac9130d7fa72070be3e01dbd2dff7abfc"
+    },
+    {
+      "path": "assistants/resources.py",
+      "git_blob_sha": "e3355b6f573991118b7e6a3e0954602905eb5201"
+    },
+    {
+      "path": "assistants/responses/README.md",
+      "git_blob_sha": "100bb0d4de40259b88f922e32759d3c9706d9cf1"
+    },
+    {
+      "path": "assistants/responses/__init__.py",
+      "git_blob_sha": "307710edc881b387dbefaece2a42ada215cadcf2"
+    },
+    {
+      "path": "assistants/responses/assistant.py",
+      "git_blob_sha": "04fd5f3d83820f28ce0c995f8864d90d3e345925"
+    },
+    {
+      "path": "assistants/responses/delegation.py",
+      "git_blob_sha": "0ac59978695f3f113059856f84197c521519744c"
+    },
+    {
+      "path": "assistants/responses/prompts/backend.txt",
+      "git_blob_sha": "c65d89d9088d5b64bd55005f8902999d7ed80090"
+    },
+    {
+      "path": "assistants/responses/session.py",
+      "git_blob_sha": "fa57e631f5c70b73f1d04242e88162ba628c7536"
+    },
+    {
+      "path": "assistants/responses/tools/__init__.py",
+      "git_blob_sha": "9ab11d86f8dc72ee79be0c47f7904e42001460d5"
+    },
+    {
+      "path": "assistants/responses/tools/definitions.json",
+      "git_blob_sha": "561a5bd8881388513fe15e1292bf0fee5d0ef7c0"
+    },
+    {
+      "path": "assistants/responses/tools/restaurant.py",
+      "git_blob_sha": "730498a7aefc7547d48ba7decde862166ad6b6a7"
+    },
+    {
+      "path": "assistants/responses/tools/restaurant_facts.json",
+      "git_blob_sha": "080d19e9ba3267cd35322a1199503e1d4cc5ba50"
+    },
+    {
+      "path": "assistants/runtime.py",
+      "git_blob_sha": "dfebb3414ede145942b60e857a9446cbfd04f24e"
+    },
+    {
+      "path": "assistants/tests/__init__.py",
+      "git_blob_sha": "ec32b64a1a201d7d5c90b6e3c6e6a262f87543e7"
+    },
+    {
+      "path": "assistants/tests/test_client_delegation.py",
+      "git_blob_sha": "824a7c071db07ca536359155f155805ce9a107de"
+    },
+    {
+      "path": "assistants/tests/test_client_service_security.py",
+      "git_blob_sha": "aa33a8ab60a394cc9ee81641e4e7dd0e373f842e"
+    },
+    {
+      "path": "assistants/tests/test_delegation_lifecycle.py",
+      "git_blob_sha": "2fd79b5079d1ed606c44fe33ce145235dab29c14"
+    },
+    {
+      "path": "assistants/tests/test_live_naming.py",
+      "git_blob_sha": "f6f9e2d796cee4635df396c1b0cd4151175b16e5"
+    },
+    {
+      "path": "assistants/tests/test_restaurant_baseline.py",
+      "git_blob_sha": "c267011f0a414e777627ddc76f44cc9a7fd79cce"
+    },
+    {
+      "path": "assistants/tests/test_security_hardening.py",
+      "git_blob_sha": "4d325fdbf43fc4c08756b7971c8ef39857e7a228"
+    },
+    {
+      "path": "assistants/tests/test_transport_lifecycle.py",
+      "git_blob_sha": "e454de6589ac0df2d41b6a118a09e1b16f205a7e"
+    },
+    {
+      "path": "assistants/tests/test_v3_protocol.py",
+      "git_blob_sha": "a4711587f2bbac200f8fe5d65b9c8d4fae2063cc"
+    },
+    {
+      "path": "conftest.py",
+      "git_blob_sha": "3848ce9f7b011abfeca8e8b258d90c6a8be30a41"
+    },
+    {
+      "path": "crawl_harness/README.md",
+      "git_blob_sha": "c2f827b9dddf1ef1e354af47aef437f66e8876b9"
+    },
+    {
+      "path": "crawl_harness/__init__.py",
+      "git_blob_sha": "d4d5e155b4f56a796be187bcbcaa85b42b7faf6e"
+    },
+    {
+      "path": "crawl_harness/assets/crawl-architecture.svg",
+      "git_blob_sha": "653ad001063cc6873fc0b26b512864dc7fc81821"
+    },
+    {
+      "path": "crawl_harness/audio_cache.py",
+      "git_blob_sha": "0a3e71768653e98b2f236a3f13dbd3cb520a5876"
+    },
+    {
+      "path": "crawl_harness/config.toml",
+      "git_blob_sha": "99bf139fe57f70483dcf89c7f643a631153eee87"
+    },
+    {
+      "path": "crawl_harness/data/scenarios.json",
+      "git_blob_sha": "1a08f2355c8176420740895eab59d1d99ff56af1"
+    },
+    {
+      "path": "crawl_harness/evaluate.py",
+      "git_blob_sha": "7f3bdcdd63b4e4fb2963d9864e22383c08219e38"
+    },
+    {
+      "path": "crawl_harness/graders.py",
+      "git_blob_sha": "9a25648cafb02f006ef2f89188f8d67036d83c51"
+    },
+    {
+      "path": "crawl_harness/tests/readme_example.py",
+      "git_blob_sha": "92abeb8dd3b6ddb54e2343ba9df985b3dd0a8a3c"
+    },
+    {
+      "path": "crawl_harness/tests/test_artifact_safety.py",
+      "git_blob_sha": "86e6a71cc1dc918f1cda83cc34a025afd2d29fd7"
+    },
+    {
+      "path": "crawl_harness/tests/test_audio_cache.py",
+      "git_blob_sha": "e2631cf970796d098262d419b4daa51a3e515e6a"
+    },
+    {
+      "path": "crawl_harness/tests/test_crawl_listen.py",
+      "git_blob_sha": "5c8b4b7001ef18f9e8a9c5c534bdaab3d0b21de8"
+    },
+    {
+      "path": "crawl_harness/tests/test_harness_config.py",
+      "git_blob_sha": "e7da3e3733d89a9f410d9b57d12dd3251ce93a31"
+    },
+    {
+      "path": "crawl_harness/tests/test_harness_independence.py",
+      "git_blob_sha": "c582476d641cf50e39901d5864c70b4948c18423"
+    },
+    {
+      "path": "crawl_harness/tests/test_installed_paths.py",
+      "git_blob_sha": "da5f60c7f4f9c5987c5367a9c118d54d91e605b4"
+    },
+    {
+      "path": "crawl_harness/tests/test_metric_reporting.py",
+      "git_blob_sha": "59adcacea78689634e174aee0114931d77b203e4"
+    },
+    {
+      "path": "crawl_harness/tests/test_readme_contract.py",
+      "git_blob_sha": "88fd32e744309ff92ed2e9ce9af0bdbe117177c0"
+    },
+    {
+      "path": "crawl_harness/tests/test_response_collector.py",
+      "git_blob_sha": "0b4892daef7f5dea15a0fb0776c201d50684cfbd"
+    },
+    {
+      "path": "crawl_harness/tests/test_restaurant_crawl.py",
+      "git_blob_sha": "528359669f3756e1523737d77989c8c83c9ba286"
+    },
+    {
+      "path": "crawl_harness/tests/test_semantic_scoring_contract.py",
+      "git_blob_sha": "455c0f80ffe82cad3f48a75daae0aa98c84a8f8c"
+    },
+    {
+      "path": "crawl_harness/tests/test_shared_runtime.py",
+      "git_blob_sha": "206da0c742d76f268cd40b1060b6ddcfa0d75df8"
+    },
+    {
+      "path": "crawl_harness/tests/test_shared_scenarios.py",
+      "git_blob_sha": "276cd355fe5cd71feb82f7ac541440cb259321d1"
+    },
+    {
+      "path": "crawl_harness/tests/test_v3_projection.py",
+      "git_blob_sha": "3bb76056c805bcfc614868e9fa5bee426616c1d4"
+    },
+    {
+      "path": "docs/examples/run-results.json",
+      "git_blob_sha": "ff8a145223de51e1b561dda78d915ea0551e0769"
+    },
+    {
+      "path": "docs/metrics-contract.md",
+      "git_blob_sha": "9e3d01e81a45377d92ca574183ad6fc465e24fb6"
+    },
+    {
+      "path": "pyproject.toml",
+      "git_blob_sha": "5c9516f06a0f03519791f8aaf9d68fd8baf4c0f9"
+    },
+    {
+      "path": "run_harness/README.md",
+      "git_blob_sha": "98e762c8478d8db9f490f57409f89cadb57758c3"
+    },
+    {
+      "path": "run_harness/__init__.py",
+      "git_blob_sha": "b29a5c6066ad06786d5f78bdb78969261710e8dc"
+    },
+    {
+      "path": "run_harness/assets/run-architecture.svg",
+      "git_blob_sha": "90696ad9653cd13b7e1e016fc9bc5eb2e2ff465c"
+    },
+    {
+      "path": "run_harness/config.toml",
+      "git_blob_sha": "6aee78ac26cc8faf457ebcdeaed0832dcbf4d627"
+    },
+    {
+      "path": "run_harness/data/scenarios.json",
+      "git_blob_sha": "81f78965932b03999959bf91414d71869f548125"
+    },
+    {
+      "path": "run_harness/evaluate.py",
+      "git_blob_sha": "9d8d047fcaed3563451ee855252daedadcda87fc"
+    },
+    {
+      "path": "run_harness/graders.py",
+      "git_blob_sha": "e78e201e63a3a72e3dc978b14a32869c4de0895b"
+    },
+    {
+      "path": "run_harness/observability.py",
+      "git_blob_sha": "2efd6fe1235b9a8ac0c0c1aa97327178f36351b1"
+    },
+    {
+      "path": "run_harness/scenarios.py",
+      "git_blob_sha": "b3fad7cab1c1654976d14ef869fe0e8cfe6042e4"
+    },
+    {
+      "path": "run_harness/simulation/__init__.py",
+      "git_blob_sha": "fdddbd1d658dfe689b730a3458b6a4f6cf9832ae"
+    },
+    {
+      "path": "run_harness/simulation/gpt_live.py",
+      "git_blob_sha": "2d485f9ffd246abf8112e973a2543147b3761e31"
+    },
+    {
+      "path": "run_harness/simulation/gpt_live_participants.py",
+      "git_blob_sha": "1d57a174067980a2761463f41f9d4773426f5c31"
+    },
+    {
+      "path": "run_harness/simulation/gpt_live_prompts.py",
+      "git_blob_sha": "9799a634db51baf19ee0fbcdec1ee998f0a2b33b"
+    },
+    {
+      "path": "run_harness/simulation/gpt_live_runner.py",
+      "git_blob_sha": "fe3bef8b679d632e441894c69858aac149554ec2"
+    },
+    {
+      "path": "run_harness/simulation/models.py",
+      "git_blob_sha": "e947eb6ae803aca4df4a0385735b5b9263d49438"
+    },
+    {
+      "path": "run_harness/simulation/semantic_completion.py",
+      "git_blob_sha": "e901e701c5d4cbb250220db492de7464ca729c67"
+    },
+    {
+      "path": "run_harness/simulation/validity.py",
+      "git_blob_sha": "27ca6c39b2db3a2a1eb9f3a38e74ebf60fc8b224"
+    },
+    {
+      "path": "run_harness/tests/__init__.py",
+      "git_blob_sha": "4e6fe06b12ced92d9a2d89fa73bae28e9dfb89e4"
+    },
+    {
+      "path": "run_harness/tests/test_assistant_opening.py",
+      "git_blob_sha": "09a5b81b0f030f56c18f7ca7f452f63682307931"
+    },
+    {
+      "path": "run_harness/tests/test_audio_realism.py",
+      "git_blob_sha": "8e6c2ca0ee3003cfbcd0a40b4ba7f69139930d82"
+    },
+    {
+      "path": "run_harness/tests/test_audio_realism_continuity.py",
+      "git_blob_sha": "331810514378c8eb1f96326b09e94a80a73bdc33"
+    },
+    {
+      "path": "run_harness/tests/test_delegation_counts.py",
+      "git_blob_sha": "84b53ba79b703ba2ed5e606ff9435979dda51126"
+    },
+    {
+      "path": "run_harness/tests/test_gpt_live_protocol.py",
+      "git_blob_sha": "aa488659ef86af7c4ab878e587959ad70d378430"
+    },
+    {
+      "path": "run_harness/tests/test_output_buffer.py",
+      "git_blob_sha": "6ebf4fdc4be7104e6bd80d67060a4235a590bd7b"
+    },
+    {
+      "path": "run_harness/tests/test_quiet_captions.py",
+      "git_blob_sha": "866704a88f74c3e3477bb4551ed32425fde50ada"
+    },
+    {
+      "path": "run_harness/tests/test_restaurant_run.py",
+      "git_blob_sha": "d4e18bfc3ff105e900c15c1a69c2945aa1fa925e"
+    },
+    {
+      "path": "run_harness/tests/test_result_schema.py",
+      "git_blob_sha": "4807d6f9dbaa2c056b312791906a540a55df4cdd"
+    },
+    {
+      "path": "run_harness/tests/test_run_gpt_live_caller.py",
+      "git_blob_sha": "730afd6fc6c18f02b8525f19cdf5f620949d4c36"
+    },
+    {
+      "path": "run_harness/tests/test_run_graders.py",
+      "git_blob_sha": "8c0f089b7f4c39be838ff4a67150e7380ec02f3b"
+    },
+    {
+      "path": "run_harness/tests/test_run_harness.py",
+      "git_blob_sha": "aedd849e408846c9ff5d7357a1c6d4b5eae4358c"
+    },
+    {
+      "path": "run_harness/tests/test_run_transport_fidelity.py",
+      "git_blob_sha": "ed1a753a7e350b0aa6535fa753fd7e123295d33e"
+    },
+    {
+      "path": "run_harness/tests/test_run_visualization.py",
+      "git_blob_sha": "9e936ac173d4a31b5fe66f26b1ea927f6ab9bd7a"
+    },
+    {
+      "path": "run_harness/tests/test_semantic_completion.py",
+      "git_blob_sha": "25e04744abbe01169bbae078f5dad55b8ca4b2e7"
+    },
+    {
+      "path": "run_harness/tests/test_viewer_activity.py",
+      "git_blob_sha": "80924de0cb6341d09242222f5e600aa15df27fe7"
+    },
+    {
+      "path": "run_harness/tests/test_viewer_delegations.py",
+      "git_blob_sha": "4b1e6053f8a47c967e3c31cd02e29c4505abb047"
+    },
+    {
+      "path": "run_harness/tests/viewer_dom_test.cjs",
+      "git_blob_sha": "6d94ca6bf8cacf1c653c7a81de1cff02bb7c0866"
+    },
+    {
+      "path": "run_harness/visualization/__init__.py",
+      "git_blob_sha": "0b53233aacadea02638661b52be3da56a628b051"
+    },
+    {
+      "path": "run_harness/visualization/activity.py",
+      "git_blob_sha": "470f37a94e34317004b9c6b447277b388ee54c03"
+    },
+    {
+      "path": "run_harness/visualization/delegations.py",
+      "git_blob_sha": "b5ae5c702f8fd90ecc3f59a93ff4af52f1510c9d"
+    },
+    {
+      "path": "run_harness/visualization/export_viewer.py",
+      "git_blob_sha": "364951bd1ffb47714e706b624ad1e730966c376a"
+    },
+    {
+      "path": "run_harness/visualization/templates/viewer.css",
+      "git_blob_sha": "7116f5916280ac4ba9816d39344c9019614a91b5"
+    },
+    {
+      "path": "run_harness/visualization/templates/viewer.js",
+      "git_blob_sha": "5858f72aebe8c75448378035401dc29995a7f55f"
+    },
+    {
+      "path": "shared/README.md",
+      "git_blob_sha": "387b9ae15fb985657eeb448ddb404e53867e4aa1"
+    },
+    {
+      "path": "shared/__init__.py",
+      "git_blob_sha": "806e441d3d424a1eb0580b393553766d1888af78"
+    },
+    {
+      "path": "shared/artifacts.py",
+      "git_blob_sha": "ec7991ace77bf30b9c16a3f4da8b301b493d9324"
+    },
+    {
+      "path": "shared/audio/__init__.py",
+      "git_blob_sha": "71db8abc79ee79c3a565efc609514f4080ea546a"
+    },
+    {
+      "path": "shared/audio/conversation.py",
+      "git_blob_sha": "04a2194565373d201a1c4575791edfb448862cce"
+    },
+    {
+      "path": "shared/audio/effects.py",
+      "git_blob_sha": "e3b05897a8b6556c137468d7237dd97d6f21c603"
+    },
+    {
+      "path": "shared/audio/pacing.py",
+      "git_blob_sha": "6d0e968b78610b3003054115a69e8d07859fa07b"
+    },
+    {
+      "path": "shared/audio/pcm.py",
+      "git_blob_sha": "281801735061b91840306b90a1d1d813e921c23a"
+    },
+    {
+      "path": "shared/config.py",
+      "git_blob_sha": "f3ea3af38b542814520f7d731894a02de0063311"
+    },
+    {
+      "path": "shared/environment.py",
+      "git_blob_sha": "244c782cc1d273a7e93c5ac7498de1870242ce59"
+    },
+    {
+      "path": "shared/grading/__init__.py",
+      "git_blob_sha": "8b8041c08bd803748f68f4a82e1f967916dddc73"
+    },
+    {
+      "path": "shared/grading/matching.py",
+      "git_blob_sha": "a616a74411c1c7e19ff0225b9b1e68f285c39c74"
+    },
+    {
+      "path": "shared/grading/outcomes.py",
+      "git_blob_sha": "7b049c6ebdbf0f6def24509be3ea74a55529e485"
+    },
+    {
+      "path": "shared/grading/scoring.py",
+      "git_blob_sha": "2d92a81beb2fdf6d1f525c717d0bf67181425d9a"
+    },
+    {
+      "path": "shared/grading/semantic.py",
+      "git_blob_sha": "361a34f766007559c6f994e41b53eaa40e286545"
+    },
+    {
+      "path": "shared/metrics/__init__.py",
+      "git_blob_sha": "98e2e118f7a7e0a703bd06c9edebc8a05ff8eb69"
+    },
+    {
+      "path": "shared/metrics/evidence.py",
+      "git_blob_sha": "4268c93dc17644cb44eabfb724694471f0e2a9a2"
+    },
+    {
+      "path": "shared/metrics/interaction.py",
+      "git_blob_sha": "7f212601f97d094dcc673c271d06d4a05ac53fb7"
+    },
+    {
+      "path": "shared/metrics/latency.py",
+      "git_blob_sha": "4f2820ae53b34823b7c77dec862cc0cb22665f3b"
+    },
+    {
+      "path": "shared/metrics/reporting.py",
+      "git_blob_sha": "9f36b0036202ad423c5eac691f10f39e46220a39"
+    },
+    {
+      "path": "shared/metrics/tokens.py",
+      "git_blob_sha": "5163994a3c60a312af55a13d6610508d9334410f"
+    },
+    {
+      "path": "shared/observability/__init__.py",
+      "git_blob_sha": "57938894222ec343be06125eb7f9107aeb6b6cdc"
+    },
+    {
+      "path": "shared/observability/delegation.py",
+      "git_blob_sha": "63aa1ff2584de728ad64133721c6214c822ec9f9"
+    },
+    {
+      "path": "shared/observability/redaction.py",
+      "git_blob_sha": "e969dc7f74e823df5fe58c02d7cb446aeb0895ae"
+    },
+    {
+      "path": "shared/observability/timeline.py",
+      "git_blob_sha": "48e9ae8f55268cbca5adaf551b65b8bba0e116cd"
+    },
+    {
+      "path": "shared/observability/trace.py",
+      "git_blob_sha": "6190b39235f3e969a03a282bf24484bf166b081c"
+    },
+    {
+      "path": "shared/paths.py",
+      "git_blob_sha": "77d0677dcaaa3d1a6a40cd0b9b0b943282fb0eca"
+    },
+    {
+      "path": "shared/private_files.py",
+      "git_blob_sha": "f8daec9d8b096bac6411d76084142be0ca12713b"
+    },
+    {
+      "path": "shared/reporting/__init__.py",
+      "git_blob_sha": "ce0cdfb49e40d44316146c96ac1316eb852c859b"
+    },
+    {
+      "path": "shared/reporting/compat.py",
+      "git_blob_sha": "a385a575d5412bf286022c39b7ff5157852ef258"
+    },
+    {
+      "path": "shared/reporting/results.py",
+      "git_blob_sha": "2faaaa7aae84685340f92af238324be3905b8d54"
+    },
+    {
+      "path": "shared/reporting/schema.py",
+      "git_blob_sha": "ed78bfa257ea1c5ea326ff596edaf7aea49ed39e"
+    },
+    {
+      "path": "shared/scenarios.py",
+      "git_blob_sha": "08d65241577a60aa84978bd9e20af7e1d97fa065"
+    },
+    {
+      "path": "shared/single_turn/__init__.py",
+      "git_blob_sha": "ce5fa603e88610c1839ba2948502ddf16eb7d532"
+    },
+    {
+      "path": "shared/single_turn/console.py",
+      "git_blob_sha": "05df40599e4494d55df15dbfce1b452c88558f60"
+    },
+    {
+      "path": "shared/single_turn/grading.py",
+      "git_blob_sha": "433d2bf0113c97ff00bb84fc1a4d0ede7a1b5dcc"
+    },
+    {
+      "path": "shared/single_turn/observability.py",
+      "git_blob_sha": "a831e8aaa4358f485308edf9c2eb2be7b50dba57"
+    },
+    {
+      "path": "shared/single_turn/response.py",
+      "git_blob_sha": "62a4aa2c27ba659ec1e373edc76247ccff8ab1cc"
+    },
+    {
+      "path": "shared/single_turn/runtime.py",
+      "git_blob_sha": "566fef964f2b567856056c7f32434e3a4337bcf8"
+    },
+    {
+      "path": "shared/single_turn/types.py",
+      "git_blob_sha": "85a2913c78aedc2f8ad0d93286546491d6e05f0b"
+    },
+    {
+      "path": "shared/testing/__init__.py",
+      "git_blob_sha": "ef01c3c269e7dcd3269903c381242c88462429c6"
+    },
+    {
+      "path": "shared/testing/live.py",
+      "git_blob_sha": "b3a1a50089b1470c53aa9801849bd6ed0f5dccd1"
+    },
+    {
+      "path": "uv.lock",
+      "git_blob_sha": "4542a38b13ffe9d08471d916c93e3f242c7364a3"
+    },
+    {
+      "path": "walk_harness/README.md",
+      "git_blob_sha": "0addf68c9da763528c1ef4f09e6084a317775a3e"
+    },
+    {
+      "path": "walk_harness/__init__.py",
+      "git_blob_sha": "d11b3a51009bfd9c85d86f3027d281035e4923c1"
+    },
+    {
+      "path": "walk_harness/assets/walk-architecture.svg",
+      "git_blob_sha": "6f429026ba8bb946e4c02f8a67b49b5b006415b9"
+    },
+    {
+      "path": "walk_harness/config.toml",
+      "git_blob_sha": "99bf139fe57f70483dcf89c7f643a631153eee87"
+    },
+    {
+      "path": "walk_harness/data/scenarios.json",
+      "git_blob_sha": "10328d065771139eba606ae9c8a89d75d1d821cc"
+    },
+    {
+      "path": "walk_harness/evaluate.py",
+      "git_blob_sha": "ff6d678fe02d877adddac9ffbc9bce2298f7f7b5"
+    },
+    {
+      "path": "walk_harness/generate_audio.py",
+      "git_blob_sha": "ede9712f6820ace95a536a2929fcb89e336281d5"
+    },
+    {
+      "path": "walk_harness/graders.py",
+      "git_blob_sha": "89aaf4979f95c3abfbd6319a92a747d792bb486f"
+    },
+    {
+      "path": "walk_harness/tests/test_walk_harness.py",
+      "git_blob_sha": "c29b9f6c02588eb6a158ea1ae256951e344fb4f2"
+    },
+    {
+      "path": "walk_harness/data/audio/restaurant_001.wav",
+      "git_blob_sha": "f9187c3d914f6274845d404988a87d0fb7267d6c"
+    }
+  ]
+}

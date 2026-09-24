@@ -1,0 +1,845 @@
+{
+  "schema_version": "1.0",
+  "scenarios": [
+    {
+      "id": "collect_ja",
+      "title": "Collect details (ja)",
+      "type": "booking",
+      "interaction": "multi_turn",
+      "tags": [
+        "ja",
+        "collect"
+      ],
+      "input": {
+        "text": "2026年10月6日に予約したいです。"
+      },
+      "application": {
+        "initial_state": {
+          "reservations": []
+        }
+      },
+      "expected": {
+        "answer": "Check availability, create exactly one reservation for the requested details, then confirm success.",
+        "criteria": [
+          "Preserve the caller's latest intent and all supplied details.",
+          "Check availability before creating the reservation; never book an unavailable slot.",
+          "Create exactly one reservation; never claim success before the tool succeeds.",
+          "Respond in the caller's language and accurately communicate the completed reservation.",
+          "Collect missing information without guessing."
+        ],
+        "delegation": "required",
+        "tools": {
+          "required": [
+            {
+              "name": "check_availability",
+              "arguments": {
+                "date": "2026-10-06",
+                "time": "19:00",
+                "party_size": 2
+              }
+            },
+            {
+              "name": "create_reservation",
+              "arguments": {
+                "guest_name": "マヤ",
+                "date": "2026-10-06",
+                "time": "19:00",
+                "party_size": 2
+              }
+            }
+          ],
+          "prohibited": [
+            {
+              "name": "cancel_reservation",
+              "arguments": {}
+            }
+          ]
+        },
+        "state": {
+          "reservation_created": true,
+          "guest_name": "マヤ",
+          "date": "2026-10-06",
+          "time": "19:00",
+          "party_size": 2,
+          "reservations": [
+            {
+              "reservation_id": "R-001",
+              "guest_name": "マヤ",
+              "date": "2026-10-06",
+              "time": "19:00",
+              "party_size": 2,
+              "cancelled": false
+            }
+          ]
+        },
+        "golden_path": {
+          "turns": 7,
+          "delegations": 1
+        },
+        "procedure": {
+          "id": "check_then_book",
+          "steps": [
+            {
+              "id": "availability",
+              "kind": "tool",
+              "tool": "check_availability",
+              "arguments": {
+                "date": "2026-10-06",
+                "time": "19:00",
+                "party_size": 2
+              },
+              "critical": true,
+              "after": []
+            },
+            {
+              "id": "book",
+              "kind": "tool",
+              "tool": "create_reservation",
+              "arguments": {
+                "guest_name": "マヤ",
+                "date": "2026-10-06",
+                "time": "19:00",
+                "party_size": 2
+              },
+              "after": [
+                "availability"
+              ],
+              "critical": true
+            },
+            {
+              "id": "state",
+              "kind": "state",
+              "arguments": {
+                "reservation_created": true,
+                "guest_name": "マヤ",
+                "date": "2026-10-06",
+                "time": "19:00",
+                "party_size": 2,
+                "reservations": [
+                  {
+                    "reservation_id": "R-001",
+                    "guest_name": "マヤ",
+                    "date": "2026-10-06",
+                    "time": "19:00",
+                    "party_size": 2,
+                    "cancelled": false
+                  }
+                ]
+              },
+              "after": [
+                "book"
+              ],
+              "critical": true
+            },
+            {
+              "id": "confirmation",
+              "kind": "grounded_confirmation",
+              "after": [
+                "book"
+              ],
+              "critical": true
+            }
+          ]
+        }
+      },
+      "simulation_parameters": {
+        "goal": "Book exactly one table for {'guest_name': 'マヤ', 'date': '2026-10-06', 'time': '19:00', 'party_size': 2}. Speak only Japanese.",
+        "known_facts": {
+          "guest_name": "マヤ",
+          "date": "2026-10-06",
+          "time": "19:00",
+          "party_size": 2
+        },
+        "agenda": [
+          {
+            "id": "details",
+            "commitment": "Supply your name and party size when asked.",
+            "trigger_condition": "Assistant requests name or party size.",
+            "completion_condition": "Name and party size have been spoken.",
+            "action": "answer",
+            "facts": [
+              "guest_name",
+              "party_size"
+            ],
+            "response_hint": "マヤ、2名です。"
+          },
+          {
+            "id": "time",
+            "commitment": "Provide the desired 19:00 time when asked.",
+            "trigger_condition": "Assistant asks for the time.",
+            "completion_condition": "Caller supplies 19:00.",
+            "action": "answer",
+            "facts": [
+              "time"
+            ],
+            "response_hint": "午後7時です。"
+          },
+          {
+            "id": "finish",
+            "commitment": "Thank the assistant once the correct reservation is confirmed.",
+            "trigger_condition": "The requested booking is confirmed.",
+            "completion_condition": "Caller understands the booking is complete.",
+            "completion_basis": "live_context",
+            "action": "finish",
+            "required": false
+          }
+        ],
+        "expectations": [
+          "Answer the assistant's actual questions naturally; give multiple requested details together.",
+          "Provide missing details when asked."
+        ],
+        "persona": {
+          "id": "diner_ja",
+          "description": "A concise Japanese speaking diner.",
+          "voice": "cedar",
+          "speech_instructions": "Speak only Japanese, naturally and clearly.",
+          "backchannels": [
+            "はい"
+          ],
+          "backchannel_tendency": 0.12
+        }
+      }
+    },
+    {
+      "id": "alternative_ja",
+      "title": "Alternative slot (ja)",
+      "type": "booking",
+      "interaction": "multi_turn",
+      "tags": [
+        "ja",
+        "alternative"
+      ],
+      "input": {
+        "text": "2026年10月6日の午後6時に予約したいです。"
+      },
+      "application": {
+        "initial_state": {
+          "reservations": []
+        }
+      },
+      "expected": {
+        "answer": "Check availability, create exactly one reservation for the requested details, then confirm success.",
+        "criteria": [
+          "Preserve the caller's latest intent and all supplied details.",
+          "Check availability before creating the reservation; never book an unavailable slot.",
+          "Create exactly one reservation; never claim success before the tool succeeds.",
+          "Respond in the caller's language and accurately communicate the completed reservation.",
+          "Collect missing information without guessing.",
+          "The caller must accept 20:00 before the reservation is created; do not infer consent from availability."
+        ],
+        "delegation": "required",
+        "tools": {
+          "required": [
+            {
+              "name": "check_availability",
+              "arguments": {
+                "date": "2026-10-06",
+                "time": "18:00",
+                "party_size": 2
+              }
+            },
+            {
+              "name": "check_availability",
+              "arguments": {
+                "date": "2026-10-06",
+                "time": "20:00",
+                "party_size": 2
+              }
+            },
+            {
+              "name": "create_reservation",
+              "arguments": {
+                "guest_name": "マヤ",
+                "date": "2026-10-06",
+                "time": "20:00",
+                "party_size": 2
+              }
+            }
+          ],
+          "prohibited": [
+            {
+              "name": "cancel_reservation",
+              "arguments": {}
+            }
+          ]
+        },
+        "state": {
+          "reservation_created": true,
+          "guest_name": "マヤ",
+          "date": "2026-10-06",
+          "time": "20:00",
+          "party_size": 2,
+          "reservations": [
+            {
+              "reservation_id": "R-001",
+              "guest_name": "マヤ",
+              "date": "2026-10-06",
+              "time": "20:00",
+              "party_size": 2,
+              "cancelled": false
+            }
+          ]
+        },
+        "golden_path": {
+          "turns": 7,
+          "delegations": 2
+        },
+        "procedure": {
+          "id": "check_then_book",
+          "steps": [
+            {
+              "id": "first_check",
+              "kind": "tool",
+              "tool": "check_availability",
+              "arguments": {
+                "date": "2026-10-06",
+                "time": "18:00",
+                "party_size": 2
+              },
+              "critical": true
+            },
+            {
+              "id": "availability",
+              "kind": "tool",
+              "tool": "check_availability",
+              "arguments": {
+                "date": "2026-10-06",
+                "time": "20:00",
+                "party_size": 2
+              },
+              "critical": true,
+              "after": [
+                "first_check"
+              ]
+            },
+            {
+              "id": "book",
+              "kind": "tool",
+              "tool": "create_reservation",
+              "arguments": {
+                "guest_name": "マヤ",
+                "date": "2026-10-06",
+                "time": "20:00",
+                "party_size": 2
+              },
+              "after": [
+                "availability"
+              ],
+              "critical": true
+            },
+            {
+              "id": "state",
+              "kind": "state",
+              "arguments": {
+                "reservation_created": true,
+                "guest_name": "マヤ",
+                "date": "2026-10-06",
+                "time": "20:00",
+                "party_size": 2,
+                "reservations": [
+                  {
+                    "reservation_id": "R-001",
+                    "guest_name": "マヤ",
+                    "date": "2026-10-06",
+                    "time": "20:00",
+                    "party_size": 2,
+                    "cancelled": false
+                  }
+                ]
+              },
+              "after": [
+                "book"
+              ],
+              "critical": true
+            },
+            {
+              "id": "confirmation",
+              "kind": "grounded_confirmation",
+              "after": [
+                "book"
+              ],
+              "critical": true
+            }
+          ]
+        }
+      },
+      "simulation_parameters": {
+        "goal": "Book exactly one table for {'guest_name': 'マヤ', 'date': '2026-10-06', 'time': '20:00', 'party_size': 2}. Speak only Japanese.",
+        "known_facts": {
+          "guest_name": "マヤ",
+          "date": "2026-10-06",
+          "time": "20:00",
+          "party_size": 2
+        },
+        "agenda": [
+          {
+            "id": "details",
+            "commitment": "Supply your name and party size when asked.",
+            "trigger_condition": "Assistant requests name or party size.",
+            "completion_condition": "Name and party size have been spoken.",
+            "action": "answer",
+            "facts": [
+              "guest_name",
+              "party_size"
+            ],
+            "response_hint": "マヤ、2名です。"
+          },
+          {
+            "id": "alternative",
+            "commitment": "After hearing that 18:00 is unavailable, explicitly ask to book 20:00 instead.",
+            "trigger_condition": "Assistant says the initial 18:00 slot is unavailable.",
+            "completion_condition": "Caller explicitly requests a 20:00 booking.",
+            "action": "answer",
+            "facts": [
+              "time"
+            ],
+            "response_hint": "では午後8時で予約してください。"
+          },
+          {
+            "id": "finish",
+            "commitment": "Thank the assistant once the correct reservation is confirmed.",
+            "trigger_condition": "The requested booking is confirmed.",
+            "completion_condition": "Caller understands the booking is complete.",
+            "completion_basis": "live_context",
+            "action": "finish",
+            "required": false
+          }
+        ],
+        "expectations": [
+          "Answer the assistant's actual questions naturally; give multiple requested details together.",
+          "Do not reveal your alternative time until the initial slot is reported unavailable."
+        ],
+        "persona": {
+          "id": "diner_ja",
+          "description": "A concise Japanese speaking diner.",
+          "voice": "cedar",
+          "speech_instructions": "Speak only Japanese, naturally and clearly.",
+          "backchannels": [
+            "はい"
+          ],
+          "backchannel_tendency": 0.12
+        }
+      }
+    },
+    {
+      "id": "collect_en",
+      "title": "Collect details (en)",
+      "type": "booking",
+      "interaction": "multi_turn",
+      "tags": [
+        "en",
+        "collect"
+      ],
+      "input": {
+        "text": "I'd like to book a table on October 6, 2026."
+      },
+      "application": {
+        "initial_state": {
+          "reservations": []
+        }
+      },
+      "expected": {
+        "answer": "Check availability, create exactly one reservation for the requested details, then confirm success.",
+        "criteria": [
+          "Preserve the caller's latest intent and all supplied details.",
+          "Check availability before creating the reservation; never book an unavailable slot.",
+          "Create exactly one reservation; never claim success before the tool succeeds.",
+          "Respond in the caller's language and accurately communicate the completed reservation.",
+          "Collect missing information without guessing."
+        ],
+        "delegation": "required",
+        "tools": {
+          "required": [
+            {
+              "name": "check_availability",
+              "arguments": {
+                "date": "2026-10-06",
+                "time": "19:00",
+                "party_size": 2
+              }
+            },
+            {
+              "name": "create_reservation",
+              "arguments": {
+                "guest_name": "Maya",
+                "date": "2026-10-06",
+                "time": "19:00",
+                "party_size": 2
+              }
+            }
+          ],
+          "prohibited": [
+            {
+              "name": "cancel_reservation",
+              "arguments": {}
+            }
+          ]
+        },
+        "state": {
+          "reservation_created": true,
+          "guest_name": "Maya",
+          "date": "2026-10-06",
+          "time": "19:00",
+          "party_size": 2,
+          "reservations": [
+            {
+              "reservation_id": "R-001",
+              "guest_name": "Maya",
+              "date": "2026-10-06",
+              "time": "19:00",
+              "party_size": 2,
+              "cancelled": false
+            }
+          ]
+        },
+        "golden_path": {
+          "turns": 7,
+          "delegations": 1
+        },
+        "procedure": {
+          "id": "check_then_book",
+          "steps": [
+            {
+              "id": "availability",
+              "kind": "tool",
+              "tool": "check_availability",
+              "arguments": {
+                "date": "2026-10-06",
+                "time": "19:00",
+                "party_size": 2
+              },
+              "critical": true,
+              "after": []
+            },
+            {
+              "id": "book",
+              "kind": "tool",
+              "tool": "create_reservation",
+              "arguments": {
+                "guest_name": "Maya",
+                "date": "2026-10-06",
+                "time": "19:00",
+                "party_size": 2
+              },
+              "after": [
+                "availability"
+              ],
+              "critical": true
+            },
+            {
+              "id": "state",
+              "kind": "state",
+              "arguments": {
+                "reservation_created": true,
+                "guest_name": "Maya",
+                "date": "2026-10-06",
+                "time": "19:00",
+                "party_size": 2,
+                "reservations": [
+                  {
+                    "reservation_id": "R-001",
+                    "guest_name": "Maya",
+                    "date": "2026-10-06",
+                    "time": "19:00",
+                    "party_size": 2,
+                    "cancelled": false
+                  }
+                ]
+              },
+              "after": [
+                "book"
+              ],
+              "critical": true
+            },
+            {
+              "id": "confirmation",
+              "kind": "grounded_confirmation",
+              "after": [
+                "book"
+              ],
+              "critical": true
+            }
+          ]
+        }
+      },
+      "simulation_parameters": {
+        "goal": "Book exactly one table for {'guest_name': 'Maya', 'date': '2026-10-06', 'time': '19:00', 'party_size': 2}. Speak only English.",
+        "known_facts": {
+          "guest_name": "Maya",
+          "date": "2026-10-06",
+          "time": "19:00",
+          "party_size": 2
+        },
+        "agenda": [
+          {
+            "id": "details",
+            "commitment": "Supply your name and party size when asked.",
+            "trigger_condition": "Assistant requests name or party size.",
+            "completion_condition": "Name and party size have been spoken.",
+            "action": "answer",
+            "facts": [
+              "guest_name",
+              "party_size"
+            ],
+            "response_hint": "Under Maya, for two."
+          },
+          {
+            "id": "time",
+            "commitment": "Provide the desired 19:00 time when asked.",
+            "trigger_condition": "Assistant asks for the time.",
+            "completion_condition": "Caller supplies 19:00.",
+            "action": "answer",
+            "facts": [
+              "time"
+            ],
+            "response_hint": "At 7 p.m., please."
+          },
+          {
+            "id": "finish",
+            "commitment": "Thank the assistant once the correct reservation is confirmed.",
+            "trigger_condition": "The requested booking is confirmed.",
+            "completion_condition": "Caller understands the booking is complete.",
+            "completion_basis": "live_context",
+            "action": "finish",
+            "required": false
+          }
+        ],
+        "expectations": [
+          "Answer the assistant's actual questions naturally; give multiple requested details together.",
+          "Provide missing details when asked."
+        ],
+        "persona": {
+          "id": "diner_en",
+          "description": "A concise English speaking diner.",
+          "voice": "cedar",
+          "speech_instructions": "Speak only English, naturally and clearly.",
+          "backchannels": [
+            "Right."
+          ],
+          "backchannel_tendency": 0.12
+        }
+      }
+    },
+    {
+      "id": "alternative_en",
+      "title": "Alternative slot (en)",
+      "type": "booking",
+      "interaction": "multi_turn",
+      "tags": [
+        "en",
+        "alternative"
+      ],
+      "input": {
+        "text": "I'd like to book a table on October 6, 2026, at 6 p.m."
+      },
+      "application": {
+        "initial_state": {
+          "reservations": []
+        }
+      },
+      "expected": {
+        "answer": "Check availability, create exactly one reservation for the requested details, then confirm success.",
+        "criteria": [
+          "Preserve the caller's latest intent and all supplied details.",
+          "Check availability before creating the reservation; never book an unavailable slot.",
+          "Create exactly one reservation; never claim success before the tool succeeds.",
+          "Respond in the caller's language and accurately communicate the completed reservation.",
+          "Collect missing information without guessing.",
+          "The caller must accept 20:00 before the reservation is created; do not infer consent from availability."
+        ],
+        "delegation": "required",
+        "tools": {
+          "required": [
+            {
+              "name": "check_availability",
+              "arguments": {
+                "date": "2026-10-06",
+                "time": "18:00",
+                "party_size": 2
+              }
+            },
+            {
+              "name": "check_availability",
+              "arguments": {
+                "date": "2026-10-06",
+                "time": "20:00",
+                "party_size": 2
+              }
+            },
+            {
+              "name": "create_reservation",
+              "arguments": {
+                "guest_name": "Maya",
+                "date": "2026-10-06",
+                "time": "20:00",
+                "party_size": 2
+              }
+            }
+          ],
+          "prohibited": [
+            {
+              "name": "cancel_reservation",
+              "arguments": {}
+            }
+          ]
+        },
+        "state": {
+          "reservation_created": true,
+          "guest_name": "Maya",
+          "date": "2026-10-06",
+          "time": "20:00",
+          "party_size": 2,
+          "reservations": [
+            {
+              "reservation_id": "R-001",
+              "guest_name": "Maya",
+              "date": "2026-10-06",
+              "time": "20:00",
+              "party_size": 2,
+              "cancelled": false
+            }
+          ]
+        },
+        "golden_path": {
+          "turns": 7,
+          "delegations": 2
+        },
+        "procedure": {
+          "id": "check_then_book",
+          "steps": [
+            {
+              "id": "first_check",
+              "kind": "tool",
+              "tool": "check_availability",
+              "arguments": {
+                "date": "2026-10-06",
+                "time": "18:00",
+                "party_size": 2
+              },
+              "critical": true
+            },
+            {
+              "id": "availability",
+              "kind": "tool",
+              "tool": "check_availability",
+              "arguments": {
+                "date": "2026-10-06",
+                "time": "20:00",
+                "party_size": 2
+              },
+              "critical": true,
+              "after": [
+                "first_check"
+              ]
+            },
+            {
+              "id": "book",
+              "kind": "tool",
+              "tool": "create_reservation",
+              "arguments": {
+                "guest_name": "Maya",
+                "date": "2026-10-06",
+                "time": "20:00",
+                "party_size": 2
+              },
+              "after": [
+                "availability"
+              ],
+              "critical": true
+            },
+            {
+              "id": "state",
+              "kind": "state",
+              "arguments": {
+                "reservation_created": true,
+                "guest_name": "Maya",
+                "date": "2026-10-06",
+                "time": "20:00",
+                "party_size": 2,
+                "reservations": [
+                  {
+                    "reservation_id": "R-001",
+                    "guest_name": "Maya",
+                    "date": "2026-10-06",
+                    "time": "20:00",
+                    "party_size": 2,
+                    "cancelled": false
+                  }
+                ]
+              },
+              "after": [
+                "book"
+              ],
+              "critical": true
+            },
+            {
+              "id": "confirmation",
+              "kind": "grounded_confirmation",
+              "after": [
+                "book"
+              ],
+              "critical": true
+            }
+          ]
+        }
+      },
+      "simulation_parameters": {
+        "goal": "Book exactly one table for {'guest_name': 'Maya', 'date': '2026-10-06', 'time': '20:00', 'party_size': 2}. Speak only English.",
+        "known_facts": {
+          "guest_name": "Maya",
+          "date": "2026-10-06",
+          "time": "20:00",
+          "party_size": 2
+        },
+        "agenda": [
+          {
+            "id": "details",
+            "commitment": "Supply your name and party size when asked.",
+            "trigger_condition": "Assistant requests name or party size.",
+            "completion_condition": "Name and party size have been spoken.",
+            "action": "answer",
+            "facts": [
+              "guest_name",
+              "party_size"
+            ],
+            "response_hint": "Under Maya, for two."
+          },
+          {
+            "id": "alternative",
+            "commitment": "After hearing that 18:00 is unavailable, explicitly ask to book 20:00 instead.",
+            "trigger_condition": "Assistant says the initial 18:00 slot is unavailable.",
+            "completion_condition": "Caller explicitly requests a 20:00 booking.",
+            "action": "answer",
+            "facts": [
+              "time"
+            ],
+            "response_hint": "Then please book 8 p.m. instead."
+          },
+          {
+            "id": "finish",
+            "commitment": "Thank the assistant once the correct reservation is confirmed.",
+            "trigger_condition": "The requested booking is confirmed.",
+            "completion_condition": "Caller understands the booking is complete.",
+            "completion_basis": "live_context",
+            "action": "finish",
+            "required": false
+          }
+        ],
+        "expectations": [
+          "Answer the assistant's actual questions naturally; give multiple requested details together.",
+          "Do not reveal your alternative time until the initial slot is reported unavailable."
+        ],
+        "persona": {
+          "id": "diner_en",
+          "description": "A concise English speaking diner.",
+          "voice": "cedar",
+          "speech_instructions": "Speak only English, naturally and clearly.",
+          "backchannels": [
+            "Right."
+          ],
+          "backchannel_tendency": 0.12
+        }
+      }
+    }
+  ]
+}

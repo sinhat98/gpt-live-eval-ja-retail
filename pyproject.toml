@@ -1,0 +1,22 @@
+[project]
+name = "japanese-retail-voice-eval-lab"
+version = "0.1.0"
+description = "Japanese retail voice evaluations with J-tau and Gemini TTS"
+requires-python = ">=3.12"
+dependencies = ["gpt-live-evals", "openai==2.52.0"]
+
+[tool.uv.sources]
+gpt-live-evals = { path = "vendor/gpt_live_evals", editable = true }
+
+[dependency-groups]
+dev = ["pytest>=8.3", "pytest-asyncio>=0.25", "ruff>=0.9"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+asyncio_mode = "auto"
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+extend-exclude = ["vendor"]

@@ -1,0 +1,18 @@
+{
+  "repository": "sbintuitions/j-tau-bench",
+  "commit": "36c77f84438031b9454047102bbbcab71d3ad262",
+  "language": "ja-JP",
+  "license": "vendor/j_tau/LICENSE",
+  "source_files": {
+    "db.json": "f3ca4002daf4ee656847f674b96b52c64671c417274b522c93ab9dc15267c89e",
+    "split_tasks.json": "ed0580ec52575b63fbf76568af42490da6ee7783ecb4aa81af46961291358f20",
+    "policy.md": "204945050622be0e2641a1eee2a4fae61497d768346bb6e51216a5af18e4e421",
+    "tasks.json": "e9cb818c1b61bec67a942f2d4ff073c4e8a019e6822c7be6f5a6f04af16d400d"
+  },
+  "adaptations": [
+    "Isolated worker namespace bootstrap skips eager runner imports",
+    "Japanese voice operational supplement",
+    "name-phone-v1: synthetic phone sidecar; two legacy lookups replaced by one name+phone lookup",
+    "Scores are not official J-tau scores"
+  ]
+}
