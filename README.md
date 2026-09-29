@@ -33,14 +33,14 @@ uv run pytest -q tests
 
 実行するとAPI利用料が発生します。
 
-記事のRUNは、variant `name-kana`で6ケースを1回ずつ実行したものです。
+記事のRUNは、variant `name-kana`で6ケースを3回ずつ実行したものです。次のコマンドは6ケースを1回ずつ実行するので、記事と同じ回数にするには3回実行します。
 このvariantでは、本人確認の氏名を読みがなで照合し、一文字ずつの確認はさせません。1回の会話の上限は10分です。
 
 ```bash
 uv run python -m voice_eval run run --domain retail --suite pilot --variant name-kana --new-attempt
 ```
 
-CRAWL/WALKは、Gemini TTSで入力音声を作ってから実行します。
+CRAWL/WALKは、Gemini TTSで入力音声を作ってから実行します。記事では各条件5回実行しており、2回目以降は`--new-attempt`を付けます。
 
 ```bash
 uv run python -m voice_eval prepare --domain retail
