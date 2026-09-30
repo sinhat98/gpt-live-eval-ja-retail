@@ -52,6 +52,15 @@
               "source": "synthetic",
               "seed": 41
             }
+          },
+          {
+            "id": "telephony",
+            "condition": "telephony",
+            "path": "../../artifacts/retail/name-phone-v1/audio/retail-21-checkpoint_telephony.wav",
+            "metadata": {
+              "source": "synthetic",
+              "seed": 41
+            }
           }
         ]
       },
@@ -183,6 +192,15 @@
             "id": "noisy",
             "condition": "noisy",
             "path": "../../artifacts/retail/name-phone-v1/audio/retail-22-checkpoint_noisy.wav",
+            "metadata": {
+              "source": "synthetic",
+              "seed": 41
+            }
+          },
+          {
+            "id": "telephony",
+            "condition": "telephony",
+            "path": "../../artifacts/retail/name-phone-v1/audio/retail-22-checkpoint_telephony.wav",
             "metadata": {
               "source": "synthetic",
               "seed": 41

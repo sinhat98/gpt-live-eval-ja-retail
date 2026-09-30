@@ -60,6 +60,8 @@ def prepare(scenario=None):
     from shared.audio.gemini import INSTRUCTION, synthesize
     from shared.audio.pcm import write_mono_wav
 
+    from voice_eval.retail.checkpoints import WALK_CONDITIONS
+
     cache = CallerAudioCache(ARTIFACTS / "audio_cache")
     os.environ["GEMINI_USAGE_FILE"] = str(ARTIFACTS / "gemini_usage.jsonl")
     scenarios = json.loads((DATA / "crawl.json").read_text())["scenarios"]
@@ -80,7 +82,7 @@ def prepare(scenario=None):
             **params,
             synthesize=lambda p=params: synthesize(p["text"], model=p["model"], voice=p["voice"]),
         )
-        for condition in ("clean", "noisy"):
+        for condition in WALK_CONDITIONS:
             pcm = AudioRealismProcessor(condition, seed=41).process(audio.pcm)
             p = ARTIFACTS / "audio" / f"{s['id']}_{condition}.wav"
             p.parent.mkdir(parents=True, exist_ok=True)
@@ -319,6 +321,8 @@ def run(args):
 
     if args.variant in ("digit-kana", "phone-sequence", "name-kana") and args.mode != "run":
         raise ValueError("This variant is a RUN-only controlled experiment")
+    if args.condition and args.mode != "walk":
+        raise ValueError("--condition selects a WALK recording condition")
     if args.variant == "digit-kana":
         os.environ["RETAIL_NUMBER_READING"] = "katakana-v1"
     else:
@@ -334,7 +338,10 @@ def run(args):
         tids = ("21", "22")
     for tid in tids:
         task(tid)
-        for condition in ("clean", "noisy") if args.mode == "walk" else ("clean",):
+        conditions = ("clean",)
+        if args.mode == "walk":
+            conditions = (args.condition,) if args.condition else ("clean", "noisy")
+        for condition in conditions:
             parent = ARTIFACTS / "live" / args.mode / args.variant / tid
             if args.mode == "walk":
                 parent /= condition

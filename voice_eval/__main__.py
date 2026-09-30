@@ -333,6 +333,7 @@ def main() -> None:
         "--variant", choices=("baseline", "candidate", "digit-kana", "phone-sequence", "name-kana"), default="baseline"
     )
     p.add_argument("--repeat", type=int, choices=range(1, 4), default=1)
+    p.add_argument("--condition", choices=("clean", "noisy", "telephony"), help="Run only this retail WALK condition")
     args = parser.parse_args()
     load_dotenv(args.env_file, override=False)
     # The harness subprocess reads precisely the selected environment file.

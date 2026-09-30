@@ -3,6 +3,8 @@
 from voice_eval.retail.data import DATA, save
 from voice_eval.retail.executor import RetailExecutor
 
+WALK_CONDITIONS = ("clean", "noisy", "telephony")
+
 
 def create_checkpoint(tid):
     from voice_eval.retail.identity import identities
@@ -119,6 +121,6 @@ def build_checkpoints():
                 "path": f"../../artifacts/retail/name-phone-v1/audio/{s['id']}_{condition}.wav",
                 "metadata": {"source": "synthetic", "seed": 41},
             }
-            for condition in ("clean", "noisy")
+            for condition in WALK_CONDITIONS
         ]
     save(DATA / "walk.json", {"schema_version": "1.0", "scenarios": walk})

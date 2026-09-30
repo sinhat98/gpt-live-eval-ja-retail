@@ -40,12 +40,12 @@ uv run pytest -q tests
 uv run python -m voice_eval run run --domain retail --suite pilot --variant name-kana --new-attempt
 ```
 
-CRAWL/WALKは、Gemini TTSで入力音声を作ってから実行します。記事では各条件5回実行しており、2回目以降は`--new-attempt`を付けます。
+CRAWL/WALKは、Gemini TTSで入力音声を作ってから実行します。記事のWALKは、電話回線の音質に加工した音声（`--condition telephony`）で実行したものです。記事では各条件5回実行しており、2回目以降は`--new-attempt`を付けます。
 
 ```bash
 uv run python -m voice_eval prepare --domain retail
 uv run python -m voice_eval run crawl --domain retail --suite pilot
-uv run python -m voice_eval run walk --domain retail --suite pilot
+uv run python -m voice_eval run walk --domain retail --suite pilot --condition telephony
 ```
 
 結果は`artifacts/retail/name-phone-v1/live/<mode>/<variant>/<task>/attempt-N/`に保存されます。`result.json`が各試行の評価結果です。
